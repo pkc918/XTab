@@ -17,11 +17,7 @@ withDefaults(
     aria-hidden="true"
     focusable="false"
   >
-    <template v-if="name === 'search'">
-      <circle cx="11" cy="11" r="6.5" />
-      <path d="m16 16 4 4" />
-    </template>
-    <template v-else-if="name === 'google'">
+    <template v-if="name === 'google'">
       <g transform="translate(3 3)" stroke="none">
         <path fill="#4285f4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.91c1.7-1.57 2.69-3.88 2.69-6.62Z" />
         <path fill="#34a853" d="M9 18c2.43 0 4.47-.81 5.96-2.18l-2.91-2.26c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.59-5.04-3.72H.96v2.34A9 9 0 0 0 9 18Z" />
@@ -69,15 +65,6 @@ withDefaults(
     </template>
     <template v-else-if="name === 'arrow'">
       <path d="M5 12h14M14 7l5 5-5 5" />
-    </template>
-    <template v-else-if="name === 'chevron'">
-      <path d="m8 10 4 4 4-4" />
-    </template>
-    <template v-else-if="name === 'arrow-down'">
-      <path d="m7 9 5 5 5-5" />
-    </template>
-    <template v-else-if="name === 'arrow-up'">
-      <path d="m7 15 5-5 5 5" />
     </template>
     <template v-else-if="name === 'book'">
       <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5v-16Z" />
