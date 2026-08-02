@@ -1,0 +1,73 @@
+{
+  "title": "选择 XTab 的视觉世界",
+  "question": "选择最适合极客新标签页的黑白灰设计语言；确认后，我会基于它给出亮色与暗色两套完整色值。",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "单色绘图仪",
+      "kicker": "主方向",
+      "lineage": "工程绘图仪输出、PCB 原理图与技术制图",
+      "thesis": "把新标签页画成一张正在工作的系统图，让搜索、信息流和个人状态通过线宽、编号与连接关系形成秩序。",
+      "palette": ["#0B0B0C", "#2A2B2D", "#A7A8AB", "#F4F4F2"],
+      "materials": ["哑光绘图纸", "炭黑绘图墨水", "精密刻度线"],
+      "viewport": "标题栏像工程图签，搜索框成为横贯页面的主指令线，快捷入口是编号节点，下方三栏是一张连续的 RSS、GitHub 推荐和个人状态系统图。",
+      "risk": "若标注和连接线使用过量，会牺牲扫描速度；必须让工程语言服务信息层级。",
+      "sketch": ".impeccable/sketches/xtab-plotter.webp"
+    },
+    {
+      "id": "challenger-split-flap",
+      "label": "信息翻牌站",
+      "lineage": "车站分瓣式信息牌与机械字格",
+      "thesis": "每次打开新标签页，就像一块实时信息牌完成一次刷新，所有内容都在固定列中快速归位。",
+      "case": "产品清晰度很强，RSS 与 GitHub 更新天然适合行列扫描；但极客身份感弱于主方向，交通隐喻也可能抢走产品本身。",
+      "palette": ["#050505", "#202020", "#B8B8B8", "#F3F3F1"],
+      "materials": ["哑光翻牌片", "拉丝金属框", "固定字符格"],
+      "viewport": "搜索占据顶栏，快捷网站成为短编号站点，三组内容以时间与优先级排列成固定列，更新时只翻动变化的字符。",
+      "risk": "固定字格会压缩 RSS 长标题，处理不当会像主题皮肤而不是高效工具。",
+      "sketch": ".impeccable/sketches/xtab-split-flap.webp",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse.webp"
+    },
+    {
+      "id": "challenger-data-sublime",
+      "label": "数据崇高",
+      "lineage": "Ryoji Ikeda 式数据场、条码与频率图",
+      "thesis": "把搜索与内容流变成纯黑白的数据场，选中信息时让噪声退场、细节浮现。",
+      "case": "极客识别度和黑白承诺都很强；但抽象密度降低日常阅读清晰度，因此只在用户愿意接受更实验的界面时胜出。",
+      "palette": ["#000000", "#FFFFFF"],
+      "materials": ["像素级条码", "发丝细线", "紧密等宽数字"],
+      "viewport": "搜索像一条取样指令横切数据场，快捷入口是索引码，三栏内容由条码密度与数字坐标分隔，聚焦时周围降为细线。",
+      "risk": "纯黑白与高频线条可能造成视觉疲劳，动画必须克制并完整支持减少动态效果。",
+      "sketch": ".impeccable/sketches/xtab-data-sublime.webp",
+      "hero": "https://impeccable.style/worlds/cards/ikeda-datamatics-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/ikeda-datamatics.webp"
+    },
+    {
+      "id": "challenger-crisis-console",
+      "label": "单色危机控制台",
+      "lineage": "九十年代机甲动画指挥墙与仪器警戒框",
+      "thesis": "用巨型计数、十字准星和分区警戒框，把新标签页变成具有强烈控制感的极客指挥台。",
+      "case": "极客身份感很强，但日常浏览并非危机处置；删除原世界的橙绿警报色后仍有辨识度，却会让平静任务显得过度紧张。",
+      "palette": ["#000000", "#252525", "#8E8E8E", "#FFFFFF"],
+      "materials": ["单色荧光栅格", "机械警戒框", "七段数字"],
+      "viewport": "顶部状态框容纳 Logo 与登录，搜索像主控制命令，三栏被仪器边框锁定，GitHub 信息以大号计数和细密读数呈现。",
+      "risk": "警报语法容易制造持续紧张感，并可能压过搜索和阅读的日常效率。",
+      "sketch": ".impeccable/sketches/xtab-crisis-console.webp",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-anime-command-center-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/pop-culture-shelf-anime-command-center.webp"
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "canonCard": {
+    "label": "标准开发者仪表盘",
+    "lineage": "现代浏览器新标签页与开发者 Dashboard",
+    "thesis": "把搜索放在顶部，快捷入口和三栏内容放进规整卡片，以熟悉性与低学习成本取胜。",
+    "palette": ["#111111", "#303030", "#B3B3B3", "#F7F7F7"],
+    "materials": ["平面卡片", "细边框", "柔和层级面"],
+    "viewport": "居中的搜索框位于首要位置，下方依次是快捷入口和三栏卡片；主题切换只反转背景与文字层级。",
+    "risk": "清楚可靠，但容易与大量现有新标签页和开发者工具同质化。",
+    "sketch": ".impeccable/sketches/xtab-canon.webp"
+  },
+  "steer": true
+}

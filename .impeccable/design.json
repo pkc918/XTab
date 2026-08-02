@@ -1,0 +1,803 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-01T06:10:10Z",
+  "title": "Design System: XTab",
+  "extensions": {
+    "colorMeta": {
+      "light-matte-field": {
+        "role": "neutral",
+        "displayName": "Light Matte Field",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-white-sheet": {
+        "role": "neutral",
+        "displayName": "Light White Sheet",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-soft-inset": {
+        "role": "neutral",
+        "displayName": "Light Soft Inset",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-hover-wash": {
+        "role": "neutral",
+        "displayName": "Light Hover Wash",
+        "canonical": "#f0f0f0",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-pressed-wash": {
+        "role": "neutral",
+        "displayName": "Light Pressed Wash",
+        "canonical": "#e8e8e8",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-hairline": {
+        "role": "neutral",
+        "displayName": "Light Hairline",
+        "canonical": "#e8e8e8",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-divider": {
+        "role": "neutral",
+        "displayName": "Light Divider",
+        "canonical": "#d6d6d6",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-emphasis-border": {
+        "role": "neutral",
+        "displayName": "Light Emphasis Border",
+        "canonical": "#a3a3a3",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-ink": {
+        "role": "neutral",
+        "displayName": "Light Ink",
+        "canonical": "#141414",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-muted-ink": {
+        "role": "neutral",
+        "displayName": "Light Muted Ink",
+        "canonical": "#525252",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-faint-ink": {
+        "role": "neutral",
+        "displayName": "Light Faint Ink",
+        "canonical": "#6b6b6b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-inversion": {
+        "role": "primary",
+        "displayName": "Light Inversion",
+        "canonical": "#171717",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-on-inversion": {
+        "role": "primary",
+        "displayName": "Light On Inversion",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-focus-ring": {
+        "role": "neutral",
+        "displayName": "Light Focus Ring",
+        "canonical": "#525252",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-disabled": {
+        "role": "neutral",
+        "displayName": "Light Disabled",
+        "canonical": "#a3a3a3",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-level-0": {
+        "role": "semantic",
+        "displayName": "Light Contribution Zero",
+        "canonical": "#e8ece9",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-level-1": {
+        "role": "semantic",
+        "displayName": "Light Contribution One",
+        "canonical": "#bbf7d0",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-level-2": {
+        "role": "semantic",
+        "displayName": "Light Contribution Two",
+        "canonical": "#4ade80",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-level-3": {
+        "role": "semantic",
+        "displayName": "Light Contribution Three",
+        "canonical": "#16a34a",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "light-level-4": {
+        "role": "semantic",
+        "displayName": "Light Contribution Four",
+        "canonical": "#166534",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-matte-field": {
+        "role": "neutral",
+        "displayName": "Dark Matte Field",
+        "canonical": "#0b0b0b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-black-sheet": {
+        "role": "neutral",
+        "displayName": "Dark Black Sheet",
+        "canonical": "#121212",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-soft-inset": {
+        "role": "neutral",
+        "displayName": "Dark Soft Inset",
+        "canonical": "#171717",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-hover-wash": {
+        "role": "neutral",
+        "displayName": "Dark Hover Wash",
+        "canonical": "#232323",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-pressed-wash": {
+        "role": "neutral",
+        "displayName": "Dark Pressed Wash",
+        "canonical": "#2b2b2b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-hairline": {
+        "role": "neutral",
+        "displayName": "Dark Hairline",
+        "canonical": "#262626",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-divider": {
+        "role": "neutral",
+        "displayName": "Dark Divider",
+        "canonical": "#383838",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-emphasis-border": {
+        "role": "neutral",
+        "displayName": "Dark Emphasis Border",
+        "canonical": "#5c5c5c",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-muted-ink": {
+        "role": "neutral",
+        "displayName": "Dark Muted Ink",
+        "canonical": "#b8b8b8",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-faint-ink": {
+        "role": "neutral",
+        "displayName": "Dark Faint Ink",
+        "canonical": "#949494",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-inversion": {
+        "role": "primary",
+        "displayName": "Dark Inversion",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-on-inversion": {
+        "role": "primary",
+        "displayName": "Dark On Inversion",
+        "canonical": "#0b0b0b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-focus-ring": {
+        "role": "neutral",
+        "displayName": "Dark Focus Ring",
+        "canonical": "#a3a3a3",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-disabled": {
+        "role": "neutral",
+        "displayName": "Dark Disabled",
+        "canonical": "#5c5c5c",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-level-0": {
+        "role": "semantic",
+        "displayName": "Dark Contribution Zero",
+        "canonical": "#1b2520",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-level-1": {
+        "role": "semantic",
+        "displayName": "Dark Contribution One",
+        "canonical": "#0e4429",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-level-2": {
+        "role": "semantic",
+        "displayName": "Dark Contribution Two",
+        "canonical": "#006d32",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-level-3": {
+        "role": "semantic",
+        "displayName": "Dark Contribution Three",
+        "canonical": "#26a641",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "dark-level-4": {
+        "role": "semantic",
+        "displayName": "Dark Contribution Four",
+        "canonical": "#39d353",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(73% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "brand": {
+        "displayName": "Brand",
+        "purpose": "XTab identity at full-width layouts."
+      },
+      "brand-compact": {
+        "displayName": "Compact Brand",
+        "purpose": "Reserved compact XTab identity token; mobile is outside the current scope."
+      },
+      "search": {
+        "displayName": "Search",
+        "purpose": "The dominant command input."
+      },
+      "panel-heading": {
+        "displayName": "Panel Heading",
+        "purpose": "Titles for the three information streams and signed-out state."
+      },
+      "feed-title": {
+        "displayName": "Feed Title",
+        "purpose": "Dense two-line RSS item titles."
+      },
+      "repository-title": {
+        "displayName": "Repository Title",
+        "purpose": "Single-line repository identifiers."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and empty-state explanation."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Primary buttons and other high-emphasis actions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Filters, actions, compact controls, and footers."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Preview status, provenance, timing, indices, and legends."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "tone-standard",
+        "value": "180ms ease-out",
+        "purpose": "Color, background, border, and directional-arrow state changes when motion is allowed."
+      },
+      {
+        "name": "toast-feedback",
+        "value": "180ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "Eight-pixel vertical entrance and exit feedback for transient notices."
+      },
+      {
+        "name": "reduced-motion-cutoff",
+        "value": "0.01ms",
+        "purpose": "Collapses transition and animation duration when reduced motion is requested."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desktop-min-width",
+        "value": "1024px"
+      },
+      {
+        "name": "height-compaction",
+        "value": "820px"
+      },
+      {
+        "name": "desktop-min-height",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "GitHub Identity Control",
+      "kind": "button",
+      "refersTo": "primary-action-light",
+      "description": "A 44px circular identity action that shows the GitHub mark while signed out, a spinner while authorizing, and the real user avatar when connected.",
+      "html": "<button class=\"ds-github-identity\" type=\"button\" aria-label=\"登录 GitHub\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.8c-3 .7-3.6-1.3-3.6-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.5 1.2 3.1.9.1-.7.4-1.2.7-1.5-2.4-.3-4.9-1.2-4.9-5.3 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10.3 10.3 0 0 1 5.4 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.7 1.1 2.9 0 4.1-2.5 5-4.9 5.3.4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z\"/></svg></button>",
+      "css": ".ds-github-identity { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--accent, #171717); border-radius: 50%; background: var(--accent, #171717); color: var(--on-accent, #ffffff); cursor: pointer; } .ds-github-identity svg { width: 23px; height: 23px; fill: currentColor; } .ds-github-identity:hover { transform: translateY(-1px); filter: contrast(1.18); } .ds-github-identity:focus-visible { outline: 3px solid var(--focus, #525252); outline-offset: 2px; }"
+    },
+    {
+      "name": "Search Command Field",
+      "kind": "input",
+      "refersTo": "search-field-light",
+      "description": "The centered command field combines a four-color Google mark, search or direct URL entry, shortcut hint, and submit action while keeping its outer border visually stable during input focus.",
+      "html": "<form class=\"ds-search\" role=\"search\"><svg class=\"ds-google-mark\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#4285f4\" d=\"M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.8 3-4.3 3-7.3Z\"/><path fill=\"#34a853\" d=\"M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3.1v2.6A10 10 0 0 0 12 22Z\"/><path fill=\"#fbbc05\" d=\"M6.4 13.9A6 6 0 0 1 6.1 12c0-.7.1-1.3.3-1.9V7.5H3.1A10 10 0 0 0 2 12c0 1.6.4 3.1 1.1 4.5l3.3-2.6Z\"/><path fill=\"#ea4335\" d=\"M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A9.7 9.7 0 0 0 12 2a10 10 0 0 0-8.9 5.5l3.3 2.6C7.2 7.7 9.4 5.9 12 5.9Z\"/></svg><input class=\"ds-search-input\" type=\"search\" placeholder=\"搜索或输入网址\" aria-label=\"搜索或输入网址\"/><kbd class=\"ds-search-key\">⌘ K</kbd><button class=\"ds-search-action\" type=\"submit\" aria-label=\"开始搜索\"><svg class=\"ds-search-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M14 7l5 5-5 5\"/></svg></button></form>",
+      "css": ".ds-search { width: min(760px, 100%); min-height: 54px; display: flex; align-items: center; gap: 12px; padding: 7px 8px 7px 17px; border: 1px solid var(--border, #d6d6d6); border-radius: 17px; background: var(--surface, #ffffff); color: var(--text-tertiary, #6b6b6b); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif; } .ds-google-mark { width: 20px; height: 20px; flex: 0 0 auto; } .ds-search-input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: var(--text, #141414); font: inherit; font-size: 14px; } .ds-search-input::placeholder { color: var(--text-tertiary, #6b6b6b); opacity: 1; } .ds-search-key { padding: 4px 7px; border: 1px solid var(--border-subtle, #e8e8e8); border-radius: 7px; background: var(--surface-muted, #fafafa); color: var(--text-tertiary, #6b6b6b); font: inherit; font-size: 10px; white-space: nowrap; } .ds-search-action { width: 38px; height: 38px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 12px; background: var(--accent, #171717); color: var(--on-accent, #ffffff); cursor: pointer; } .ds-search-arrow { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } .ds-search-action:hover { filter: contrast(1.18); } .ds-search-action:active { transform: translateX(1px); } @media (prefers-reduced-motion: no-preference) { .ds-search { transition: color 180ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out; } }"
+    },
+    {
+      "name": "Quick Destination",
+      "kind": "nav",
+      "refersTo": "quick-destination-light",
+      "description": "A compact grayscale destination control with a controlled semantic-color icon.",
+      "html": "<a class=\"ds-quick-link\" href=\"https://github.com\"><svg class=\"ds-quick-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.8c-3 .7-3.6-1.3-3.6-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.5 1.2 3.1.9.1-.7.4-1.2.7-1.5-2.4-.3-4.9-1.2-4.9-5.3 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10.3 10.3 0 0 1 5.4 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.7 1.1 2.9 0 4.1-2.5 5-4.9 5.3.4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z\"/></svg><span class=\"ds-quick-label\">GitHub</span></a>",
+      "css": ".ds-quick-link { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 13px; border: 1px solid var(--border-subtle, #e8e8e8); border-radius: 13px; background: var(--surface, #ffffff); color: var(--text-secondary, #525252); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; } .ds-quick-icon { width: 17px; height: 17px; display: block; flex: 0 0 auto; fill: currentColor; } .ds-quick-link:hover { border-color: var(--border, #d6d6d6); background: var(--surface-hover, #f0f0f0); color: var(--text, #141414); } .ds-quick-link:focus-visible { outline: 3px solid var(--focus, #525252); outline-offset: 2px; } .ds-quick-link:active { background: var(--surface-pressed, #e8e8e8); } @media (prefers-reduced-motion: no-preference) { .ds-quick-link { transition: color 180ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out; } }"
+    },
+    {
+      "name": "Theme Icon Toggle",
+      "kind": "custom",
+      "refersTo": "selected-filter-light",
+      "description": "One standard-size rounded-square utility icon shows the current sun or moon state and switches theme on click.",
+      "html": "<button class=\"ds-theme-toggle\" type=\"button\" aria-label=\"切换到暗色主题\"><svg class=\"ds-theme-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/></svg></button>",
+      "css": ".ds-theme-toggle { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 11px; background: transparent; color: var(--text-secondary, #525252); cursor: pointer; } .ds-theme-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } .ds-theme-toggle:hover { background: var(--surface-hover, #f0f0f0); color: var(--text, #141414); } .ds-theme-toggle:focus-visible { outline: 3px solid var(--focus, #525252); outline-offset: 2px; }"
+    },
+    {
+      "name": "Repository Filter Chips",
+      "kind": "chip",
+      "refersTo": "selected-filter-light",
+      "description": "Transparent labels become compact inversion chips when selected.",
+      "html": "<div class=\"ds-filter-row\" role=\"group\" aria-label=\"GitHub 推荐筛选\"><button class=\"ds-filter ds-is-active\" type=\"button\" aria-pressed=\"true\">为你</button><button class=\"ds-filter\" type=\"button\" aria-pressed=\"false\">趋势</button><button class=\"ds-filter\" type=\"button\" aria-pressed=\"false\">新项目</button></div>",
+      "css": ".ds-filter-row { display: flex; align-items: center; gap: 4px; font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif; } .ds-filter { min-height: 32px; padding: 0 11px; border: 0; border-radius: 10px; background: transparent; color: var(--text-secondary, #525252); font: inherit; font-size: 11px; font-weight: 650; cursor: pointer; } .ds-filter:hover { color: var(--text, #141414); } .ds-filter.ds-is-active { background: var(--accent, #171717); color: var(--on-accent, #ffffff); } .ds-filter:focus-visible { outline: 3px solid var(--focus, #525252); outline-offset: 2px; } @media (prefers-reduced-motion: no-preference) { .ds-filter { transition: color 180ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out; } }"
+    },
+    {
+      "name": "Information Panel",
+      "kind": "card",
+      "refersTo": "information-panel-light",
+      "description": "The canonical flat sheet pairs a structured heading with clipped internal separators.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-heading\"><div class=\"ds-panel-title-group\"><span class=\"ds-panel-icon\"><svg class=\"ds-panel-glyph\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"19\" r=\"1.2\"/><path d=\"M4 11a9 9 0 0 1 9 9M4 5a15 15 0 0 1 15 15\"/></svg></span><div class=\"ds-panel-copy\"><h2 class=\"ds-panel-title\">RSS 阅读</h2><span class=\"ds-panel-subtitle\">演示内容</span></div></div></header><div class=\"ds-tab-row\"><button class=\"ds-tab ds-is-active\" type=\"button\">全部</button><button class=\"ds-tab\" type=\"button\">开发</button><button class=\"ds-tab\" type=\"button\">设计</button><button class=\"ds-tab\" type=\"button\">AI</button></div></section>",
+      "css": ".ds-panel { min-width: 0; overflow: hidden; border: 1px solid var(--border-subtle, #e8e8e8); border-radius: 16px; background: var(--surface, #ffffff); color: var(--text, #141414); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif; } .ds-panel-heading { min-height: 70px; display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border-subtle, #e8e8e8); } .ds-panel-title-group { min-width: 0; display: flex; align-items: center; gap: 11px; } .ds-panel-icon { width: 36px; height: 36px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 11px; background: var(--surface-muted, #fafafa); } .ds-panel-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } .ds-panel-glyph circle { fill: currentColor; stroke: none; } .ds-panel-title { margin: 0; font-size: 14px; line-height: 1.25; font-weight: 720; letter-spacing: -0.012em; } .ds-panel-subtitle { display: block; margin-top: 3px; color: var(--text-tertiary, #6b6b6b); font-size: 10px; line-height: 1.3; } .ds-tab-row { display: flex; align-items: center; gap: 4px; padding: 10px 12px 0; border-bottom: 1px solid var(--border-subtle, #e8e8e8); } .ds-tab { position: relative; padding: 9px 8px 11px; border: 0; background: transparent; color: var(--text-secondary, #525252); font: inherit; font-size: 11px; font-weight: 650; cursor: pointer; } .ds-tab::after { content: \"\"; position: absolute; right: 8px; bottom: -1px; left: 8px; height: 2px; border-radius: 2px 2px 0 0; background: transparent; } .ds-tab:hover, .ds-tab.ds-is-active { color: var(--text, #141414); } .ds-tab.ds-is-active::after { background: var(--accent, #171717); } .ds-tab:focus-visible { outline: 3px solid var(--focus, #525252); outline-offset: 2px; }"
+    },
+    {
+      "name": "Repository Card",
+      "kind": "card",
+      "refersTo": "information-panel-light",
+      "description": "A compact recommendation card with a repository link, semantic language accent, metadata, and an independent save toggle.",
+      "html": "<article class=\"ds-repo-card\" style=\"--repo-accent:#3178c6\"><div class=\"ds-repo-top\"><span class=\"ds-repo-mark\" aria-hidden=\"true\">R</span><button class=\"ds-save\" type=\"button\" aria-label=\"收藏 microsoft / vscode\">☆</button></div><a href=\"https://github.com/microsoft/vscode\"><h3 class=\"ds-repo-title\">microsoft / vscode</h3><p class=\"ds-repo-description\">Visual Studio Code</p></a><div class=\"ds-repo-meta\"><span><i class=\"ds-repo-dot\" aria-hidden=\"true\"></i>TypeScript</span><span>示例推荐</span></div></article>",
+      "css": ".ds-repo-card { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 10px; background: var(--surface, #ffffff); color: var(--text, #141414); } .ds-repo-card:hover { background: color-mix(in srgb, var(--repo-accent) 5%, var(--surface, #ffffff)); } .ds-repo-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; } .ds-repo-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: color-mix(in srgb, var(--repo-accent) 11%, var(--surface, #ffffff)); color: var(--repo-accent); } .ds-save { width: 30px; height: 30px; border: 0; border-radius: 9px; background: transparent; color: var(--text-tertiary, #6b6b6b); } .ds-save.is-saved { background: var(--repo-accent); color: #ffffff; } .ds-repo-title { margin: 0; overflow: hidden; font-size: 11px; line-height: 1.35; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; } .ds-repo-description { margin: 4px 0 0; color: var(--text-secondary, #525252); font-size: 10px; line-height: 1.4; } .ds-repo-meta { display: flex; justify-content: space-between; gap: 7px; margin-top: auto; padding-top: 8px; color: var(--text-tertiary, #6b6b6b); font-size: 9px; } .ds-repo-dot { width: 6px; height: 6px; display: inline-block; margin-right: 5px; border-radius: 50%; background: var(--repo-accent); }"
+    },
+    {
+      "name": "RSS Feed Row",
+      "kind": "custom",
+      "refersTo": "information-panel-light",
+      "description": "An interactive equal-height preview row combines a category signal, numeric index, clamped title, provenance, and directional cue.",
+      "html": "<button class=\"ds-feed-row\" style=\"--item-accent:#06b6d4\" type=\"button\"><span class=\"ds-feed-index\" aria-hidden=\"true\"><i></i>01</span><span class=\"ds-feed-copy\"><strong class=\"ds-feed-title\">浏览器扩展的权限边界：从最小授权开始</strong><span class=\"ds-feed-meta\">演示 RSS · 约 6 分钟</span></span><span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-feed-row { width: 100%; height: 100%; min-height: 0; display: grid; grid-template-columns: 34px minmax(0, 1fr) 15px; align-items: center; gap: 8px; padding: 7px 12px; border: 0; background: transparent; color: var(--text, #141414); text-align: left; cursor: pointer; } .ds-feed-row:hover { background: color-mix(in srgb, var(--item-accent) 6%, var(--surface, #ffffff)); } .ds-feed-index { display: flex; align-items: center; gap: 6px; color: var(--text-tertiary, #6b6b6b); font-size: 9px; font-weight: 700; } .ds-feed-index i { width: 5px; height: 5px; border-radius: 50%; background: var(--item-accent); } .ds-feed-copy { min-width: 0; } .ds-feed-title { display: -webkit-box; overflow: hidden; font-size: 11px; line-height: 1.35; font-weight: 650; -webkit-box-orient: vertical; -webkit-line-clamp: 2; } .ds-feed-meta { display: block; margin-top: 3px; color: var(--text-tertiary, #6b6b6b); font-size: 9px; }"
+    },
+    {
+      "name": "Contribution Matrix",
+      "kind": "custom",
+      "refersTo": "information-panel-light",
+      "description": "The signature decorative matrix renders five activity intensities with compact rounded cells.",
+      "html": "<div class=\"ds-contribution-grid\" aria-hidden=\"true\"><span class=\"ds-level-4\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-3\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-3\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-4\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-3\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-4\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-3\"></span><span class=\"ds-level-2\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-0\"></span><span class=\"ds-level-4\"></span><span class=\"ds-level-3\"></span><span class=\"ds-level-1\"></span><span class=\"ds-level-0\"></span></div>",
+      "css": ".ds-contribution-grid { display: grid; grid-template-columns: repeat(14, minmax(4px, 1fr)); gap: 3px; } .ds-contribution-grid span { aspect-ratio: 1; border-radius: 3px; } .ds-level-0 { background: var(--level-0, #e8ece9); } .ds-level-1 { background: var(--level-1, #bbf7d0); } .ds-level-2 { background: var(--level-2, #4ade80); } .ds-level-3 { background: var(--level-3, #16a34a); } .ds-level-4 { background: var(--level-4, #166534); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Balanced Command Lattice",
+    "overview": "XTab is a rounded grayscale command surface for geeks. Search, shortcuts, RSS, GitHub discovery, and personal GitHub context fit into one fixed desktop viewport.\n\nMatte grayscale fields carry structure and control state; compact vivid signals identify content families, languages, destinations, and contribution intensity.\n\nThe three-stream 23 / 54 / 23 lattice remains stable from 1024 × 768 through 1440 × 900 without outer scrolling.",
+    "keyCharacteristics": [
+      "Immediate command center above a calm, dense information lattice.",
+      "Matte grayscale fields with black/white inversion for structural emphasis.",
+      "Vivid color is reserved for compact semantic signals, never large surfaces.",
+      "Smooth 12–17px outer radii paired with smaller internal radii.",
+      "One consistent rounded outline-icon language.",
+      "Dense content made scannable by hierarchy, rules, and a fixed one-screen lattice."
+    ],
+    "rules": [
+      {
+        "name": "The Neutral Structure, Vivid Signal Rule",
+        "body": "Black, white, and gray own layout, typography, controls, focus, and selection; vivid color is limited to compact content identity and data signals.",
+        "section": "colors"
+      },
+      {
+        "name": "The Small-but-Structured Rule",
+        "body": "Dense text stays legible through weight, line height, and contrast tiers instead of oversized headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-by-Default Rule",
+        "body": "Surfaces do not cast shadows; borders, inset fills, and tone changes carry structure and state.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve black, white, and gray as the complete structural palette in both themes.",
+      "Do use black/white inversion sparingly for selected state, primary action, selection, and transient notice.",
+      "Do use vivid colors only for compact semantic signals such as category dots, icon wells, languages, saved state, and contribution intensity.",
+      "Do keep outer surfaces smoothly rounded in the established 12–17px range and step down only for nested details.",
+      "Do use restrained one-pixel rules and tonal layering to organize dense information.",
+      "Do keep all primary content visible in one desktop viewport at the verified target sizes.",
+      "Do keep preview, signed-out, empty, focus-visible, and reduced-motion states explicit and honest."
+    ],
+    "donts": [
+      "Don't introduce wallpaper, gradients, glow, glassmorphism, or large chromatic surfaces.",
+      "Don't turn the interface into a sharp drafting grid; retain smooth corners and softened panel transitions.",
+      "Don't add shadows to manufacture hierarchy that borders and tones already provide.",
+      "Don't let auxiliary color replace hierarchy, selected state, focus, or primary action contrast.",
+      "Don't mix icon families or stroke attitudes; color is an annotation, not a new icon system.",
+      "Don't fabricate live RSS provenance, GitHub metrics, usernames, authentication, or contribution history."
+    ]
+  }
+}
