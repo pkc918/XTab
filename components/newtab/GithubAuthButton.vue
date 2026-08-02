@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import type { GithubAuthState, GithubUser } from './types';
 
 defineProps<{
@@ -32,6 +32,6 @@ defineEmits<{ (event: 'connect'): void }>();
     @click="$emit('connect')"
   >
     <span v-if="state === 'authorizing'" class="github-auth-spinner" aria-hidden="true"></span>
-    <IconGlyph v-else name="github" :size="23" />
+    <LucideIcon v-else name="github" :size="23" />
   </button>
 </template>

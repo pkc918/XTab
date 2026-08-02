@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import RssFeedItem from './RssFeedItem.vue';
 import type { FeedCategory, RssItem } from './types';
 
@@ -22,7 +22,7 @@ const feedStatus = computed(() => `${activeFeed.value}分类，共 ${filteredIte
   <aside class="panel feed-panel" aria-labelledby="feed-title">
     <div class="panel-heading">
       <div class="panel-title-group">
-        <span class="panel-icon panel-icon--rss"><IconGlyph name="rss" /></span>
+        <span class="panel-icon panel-icon--rss"><LucideIcon name="rss" /></span>
         <div>
           <h2 id="feed-title">RSS 阅读</h2>
           <span>演示内容</span>
@@ -30,10 +30,10 @@ const feedStatus = computed(() => `${activeFeed.value}分类，共 ${filteredIte
       </div>
       <div class="panel-actions">
         <button type="button" aria-label="刷新 RSS" title="刷新 RSS" @click="emit('notify', '真实 RSS 数据源尚未接入。')">
-          <IconGlyph name="refresh" :size="16" />
+          <LucideIcon name="refresh" :size="16" />
         </button>
         <button type="button" aria-label="管理 RSS 来源" title="管理 RSS 来源" @click="emit('open-settings')">
-          <IconGlyph name="filter" :size="16" />
+          <LucideIcon name="filter" :size="16" />
         </button>
       </div>
     </div>
@@ -61,7 +61,7 @@ const feedStatus = computed(() => `${activeFeed.value}分类，共 ${filteredIte
 
     <button class="panel-footer-action" type="button" @click="emit('open-settings')">
       <span>管理订阅来源</span>
-      <IconGlyph name="arrow" :size="15" />
+      <LucideIcon name="arrow" :size="15" />
     </button>
   </aside>
 </template>

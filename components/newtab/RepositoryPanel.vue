@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import RepositoryCard from './RepositoryCard.vue';
 import type { RepoFilter, Repository } from './types';
 
@@ -26,7 +26,7 @@ function toggleSaved(name: string) {
   <section class="panel repo-panel" aria-labelledby="repo-title">
     <div class="panel-heading repo-heading">
       <div class="panel-title-group">
-        <span class="panel-icon panel-icon--repo"><IconGlyph name="github" /></span>
+        <span class="panel-icon panel-icon--repo"><LucideIcon name="github" /></span>
         <div>
           <h2 id="repo-title">GitHub 推荐</h2>
           <span>示例推荐 · 非实时</span>
@@ -60,7 +60,7 @@ function toggleSaved(name: string) {
 
     <a class="panel-footer-action" href="https://github.com/trending">
       <span>打开 GitHub Trending</span>
-      <IconGlyph name="external" :size="15" />
+      <LucideIcon name="external" :size="15" />
     </a>
   </section>
 </template>

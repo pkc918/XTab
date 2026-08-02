@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import GithubAuthButton from './GithubAuthButton.vue';
 import type { GithubAuthState, GithubUser, Theme } from './types';
 
@@ -30,7 +30,7 @@ defineEmits<{
 
     <div class="topbar-actions">
       <button class="icon-button" type="button" aria-label="打开设置" title="设置" @click="$emit('open-settings')">
-        <IconGlyph name="settings" />
+        <LucideIcon name="settings" />
       </button>
       <button
         class="theme-toggle"
@@ -40,7 +40,7 @@ defineEmits<{
         :title="theme === 'light' ? '切换到暗色主题' : '切换到亮色主题'"
         @click="$emit('toggle-theme')"
       >
-        <IconGlyph :name="theme === 'light' ? 'sun' : 'moon'" :size="18" />
+        <LucideIcon :name="theme === 'light' ? 'sun' : 'moon'" :size="18" />
       </button>
       <GithubAuthButton
         :state="githubAuthState"

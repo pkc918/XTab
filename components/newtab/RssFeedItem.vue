@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import type { RssItem } from './types';
 
 const props = defineProps<{ item: RssItem }>();
@@ -18,6 +18,6 @@ const accentStyle = { '--item-accent': props.item.accent };
       <strong>{{ item.title }}</strong>
       <span>{{ item.source }} · {{ item.detail }}</span>
     </span>
-    <IconGlyph name="arrow" :size="14" />
+    <LucideIcon name="arrow" :size="14" />
   </button>
 </template>

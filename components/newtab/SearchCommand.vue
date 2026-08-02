@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 
 const searchQuery = ref('');
 const searchInput = ref<HTMLInputElement | null>(null);
@@ -70,7 +70,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleGlobalShortcut));
 
 <template>
   <form class="search-form" role="search" @submit.prevent="submitSearch">
-    <IconGlyph name="google" :size="20" />
+    <LucideIcon name="google" :size="20" />
     <input
       ref="searchInput"
       v-model="searchQuery"
@@ -84,7 +84,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleGlobalShortcut));
     />
     <kbd aria-hidden="true">{{ shortcutLabel }}</kbd>
     <button type="submit" aria-label="开始搜索" title="开始搜索">
-      <IconGlyph name="arrow" :size="17" />
+      <LucideIcon name="arrow" :size="17" />
     </button>
   </form>
 </template>

@@ -1,3 +1,5 @@
+import type { IconName } from '@/components/icons/registry';
+
 export type Theme = 'light' | 'dark';
 export type GithubAuthState = 'signed-out' | 'authorizing' | 'signed-in';
 export type FeedCategory = '全部' | '开发' | '设计' | 'AI';
@@ -17,7 +19,7 @@ export interface GithubUser {
 export interface QuickLink {
   name: string;
   href: string;
-  icon: string;
+  icon: IconName;
   accent: string;
 }
 

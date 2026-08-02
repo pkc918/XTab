@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconGlyph from '@/components/IconGlyph.vue';
+import LucideIcon from '@/components/LucideIcon.vue';
 import ContributionMatrix from './ContributionMatrix.vue';
 import type { GithubAuthState, GithubUser } from './types';
 
@@ -15,7 +15,7 @@ defineEmits<{ (event: 'connect-github'): void }>();
   <aside class="panel profile-panel" aria-labelledby="profile-title">
     <div class="panel-heading">
       <div class="panel-title-group">
-        <span class="panel-icon panel-icon--profile"><IconGlyph name="github" /></span>
+        <span class="panel-icon panel-icon--profile"><LucideIcon name="github" /></span>
         <div>
           <h2 id="profile-title">我的 GitHub</h2>
           <span>{{ githubUser ? `@${githubUser.login}` : '尚未连接' }}</span>
@@ -40,7 +40,7 @@ defineEmits<{ (event: 'connect-github'): void }>();
     </section>
 
     <section v-else class="auth-state" aria-label="GitHub 登录状态">
-      <span class="auth-icon"><IconGlyph name="github" :size="28" /></span>
+      <span class="auth-icon"><LucideIcon name="github" :size="28" /></span>
       <h3>连接你的 GitHub</h3>
       <p>登录后可在这里查看个人动态、仓库与贡献记录。</p>
       <button
@@ -49,7 +49,7 @@ defineEmits<{ (event: 'connect-github'): void }>();
         :aria-busy="githubAuthState === 'authorizing'"
         @click="$emit('connect-github')"
       >
-        <IconGlyph name="github" :size="17" />
+        <LucideIcon name="github" :size="17" />
         <span>{{ githubAuthState === 'authorizing' ? '等待授权' : '登录 GitHub' }}</span>
       </button>
     </section>
@@ -71,7 +71,7 @@ defineEmits<{ (event: 'connect-github'): void }>();
           <span>连接后自动呈现</span>
         </div>
       </div>
-      <span class="empty-icon"><IconGlyph name="clock" :size="21" /></span>
+      <span class="empty-icon"><LucideIcon name="clock" :size="21" /></span>
       <p>这里会展示你的公开 GitHub 动态。</p>
     </section>
   </aside>
