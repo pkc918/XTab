@@ -297,7 +297,7 @@ The system uses no shadows. Depth comes from matte canvas/sheet contrast, quiet 
 
 ## Shapes
 
-The silhouette is continuously rounded rather than pill-heavy: primary panels use 16px corners, the search field uses 17px, nested groups and toasts use 14px, quick destinations use 13px, and standard buttons use 12px. Header settings and theme actions are compact 36px rounded squares, while only the larger GitHub identity control is a true circle; smaller internal geometry steps down through 11px icon tiles, 10px compact controls, 7px keycaps, and 3px contribution cells.
+The silhouette is continuously rounded rather than pill-heavy: primary panels use 16px corners, the search field uses 17px, nested groups and toasts use 14px, quick destinations use 13px, and standard buttons use 12px. Header settings and theme actions are compact 36px rounded squares, while the larger GitHub identity slot remains borderless until it contains the user's circular avatar; smaller internal geometry steps down through 11px icon tiles, 10px compact controls, 7px keycaps, and 3px contribution cells.
 
 Borders are restrained one-pixel rules. A 3px focus outline with a 2px offset stays visibly separate from the component edge. The authored mark uses solid geometry, while the shared 24px icon system uses a 1.7 stroke with round line caps and joins. Auxiliary color may tint a glyph or its compact well without changing icon construction.
 
@@ -331,7 +331,7 @@ Borders are restrained one-pixel rules. A 3px focus outline with a 2px offset st
 
 - **Quick destinations:** Compact 40px controls with 13px corners, a semantic-color icon, a 7px gap, and 12px horizontal padding. Six direct destinations and one add/configuration action remain visible in one row.
 - **Header utility actions:** Settings and theme are equal 36px rounded-square icon buttons with quiet tonal hover feedback. The theme action displays the current sun/moon state and never shows both icons simultaneously.
-- **GitHub identity:** A 44px inversion circle is deliberately larger than neighboring icon controls. Signed out it contains the GitHub mark, authorization swaps in a spinner, and successful login replaces the control in place with the user's real circular avatar.
+- **GitHub identity:** A borderless 44px identity slot is deliberately larger than neighboring icon controls. Signed out it shows a neutral GitHub mark without a container fill, authorization swaps in a spinner, and successful login replaces it in place with a same-size real circular avatar.
 
 ### Information Streams
 

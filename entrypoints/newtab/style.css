@@ -240,19 +240,26 @@ button:disabled {
   place-items: center;
   flex: 0 0 auto;
   overflow: hidden;
+  padding: 0;
   border-radius: 50%;
 }
 
 .github-login-button {
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--on-accent);
+  border: 0;
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
+}
+
+.github-login-button > svg,
+.github-account-button > img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .github-login-button:hover:not(:disabled) {
   transform: translateY(-1px);
-  filter: contrast(1.18);
 }
 
 .github-login-button:active:not(:disabled) {
@@ -264,14 +271,12 @@ button:disabled {
 }
 
 .github-account-button {
-  border: 2px solid var(--surface);
-  outline: 1px solid var(--border);
-  outline-offset: -1px;
-  background: var(--surface-muted);
+  border: 0;
+  outline: 0;
+  background: transparent;
 }
 
 .github-account-button:hover {
-  outline-color: var(--border-strong);
   transform: translateY(-1px);
 }
 
@@ -279,10 +284,7 @@ button:disabled {
   transform: translateY(0);
 }
 
-.github-account-button img {
-  width: 100%;
-  height: 100%;
-  display: block;
+.github-account-button > img {
   object-fit: cover;
 }
 
