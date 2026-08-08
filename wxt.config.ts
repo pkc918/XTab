@@ -11,5 +11,9 @@ export default defineConfig({
       'https://github.com/*',
       'https://api.github.com/*',
     ],
+    optional_host_permissions: [
+      'http://*/*',
+      'https://*/*',
+    ],
   },
 });

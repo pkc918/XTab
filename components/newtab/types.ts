@@ -11,9 +11,30 @@ export interface GithubUser {
   name: string | null;
   avatarUrl: string;
   profileUrl: string;
+  bio: string | null;
+  company: string | null;
+  location: string | null;
   followers: number;
   following: number;
   publicRepos: number;
+}
+
+export type GithubContributionLevel = 0 | 1 | 2 | 3 | 4;
+
+export interface GithubContributionDay {
+  date: string;
+  count: number;
+  level: GithubContributionLevel;
+  week: number;
+  weekday: number;
+}
+
+export interface GithubActivity {
+  id: string;
+  action: string;
+  subject: string;
+  url: string;
+  createdAt: string;
 }
 
 export interface QuickLink {
@@ -24,12 +45,14 @@ export interface QuickLink {
 }
 
 export interface RssItem {
-  id: number;
+  id: string | number;
   title: string;
   category: Exclude<FeedCategory, '全部'>;
   source: string;
   detail: string;
   accent: string;
+  href?: string;
+  publishedAt?: string;
 }
 
 export interface Repository {

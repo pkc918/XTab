@@ -25,6 +25,39 @@ WXT_GITHUB_CLIENT_ID=your_client_id
 
 访问令牌保存在扩展自己的 `chrome.storage.local` 中，并限制为可信扩展上下文可读；网页无法直接读取。
 
+## RSS 来源
+
+在 `.env.local` 中通过 `WXT_RSS_FEED_URLS` 配置来源。简单场景可使用逗号分隔：
+
+```dotenv
+WXT_RSS_FEED_URLS=https://example.com/rss.xml,https://example.org/atom.xml
+```
+
+需要自定义显示名称或分类时，也可以使用 JSON 数组（保持在同一行）：
+
+```dotenv
+WXT_RSS_FEED_URLS=[{"url":"https://example.com/feed.json","title":"示例 Feed","category":"开发"}]
+```
+
+解析器支持 RSS 0.9x/2.0、RSS 1.0（RDF）、Atom 和 JSON Feed 1.0/1.1，也兼容常见的 Content、Dublin Core、Media RSS 与 enclosure 字段。首次读取新域名时，点击 RSS 面板的刷新按钮并允许对应域名；扩展不会在安装时直接申请所有网站的读取权限。
+
+两个 composable 也可以独立使用：
+
+```ts
+import { useGithubAuth } from '@/composables/useGithubAuth';
+import { useRss } from '@/composables/useRss';
+
+const auth = useGithubAuth({ scopes: ['read:user'] });
+await auth.connect();
+const response = await auth.apiFetch('/user');
+
+const rss = useRss(['https://example.com/feed.xml']);
+const parsed = rss.parse(rawFeed, { sourceUrl: 'https://example.com/feed.xml' });
+await rss.refresh({ requestPermissions: true });
+```
+
+`useGithubAuth` 还提供会话恢复、取消、断开登录、授权状态及受限的 `apiFetch`；`useRss` 提供并发刷新、超时/大小限制、ETag/Last-Modified 条件请求、去重排序及逐来源错误状态。
+
 ## 检查与构建
 
 ```bash
