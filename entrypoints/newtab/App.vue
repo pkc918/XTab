@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import AnthropicIcon from '@iconify-vue/simple-icons/anthropic';
 import OpenAiIcon from '@iconify-vue/simple-icons/openai';
 import CommandZone from '@/components/newtab/CommandZone.vue';
@@ -137,62 +137,6 @@ const visibleQuickLinks = computed(() => {
   ];
 });
 let noticeTimer: ReturnType<typeof setTimeout> | undefined;
-
-document.documentElement.dataset.theme = theme.value;
-document.documentElement.classList.toggle('dark', theme.value === 'dark');
-
-function setTheme(nextTheme: Theme) {
-  theme.value = nextTheme;
-  document.documentElement.dataset.theme = nextTheme;
-  document.documentElement.classList.toggle('dark', nextTheme === 'dark');
-}
-
-function toggleTheme(event: MouseEvent) {
-  // @ts-expect-error View Transition is available only in supporting browsers.
-  const isAppearanceTransition = document.startViewTransition
-    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!isAppearanceTransition) {
-    setTheme(theme.value === 'light' ? 'dark' : 'light');
-    return;
-  }
-
-  const button = event.currentTarget as HTMLElement;
-  const target = button.querySelector('svg') ?? button;
-  const targetRect = target.getBoundingClientRect();
-  const x = targetRect.left + targetRect.width / 2;
-  const y = targetRect.top + targetRect.height / 2;
-  const endRadius = Math.hypot(
-    Math.max(x, innerWidth - x),
-    Math.max(y, innerHeight - y),
-  );
-  const nextTheme: Theme = theme.value === 'light' ? 'dark' : 'light';
-  const transition = document.startViewTransition(async () => {
-    setTheme(nextTheme);
-    await nextTick();
-  });
-  void transition.ready.then(() => {
-    const clipPath = [
-      `circle(0px at ${x}px ${y}px)`,
-      `circle(${endRadius}px at ${x}px ${y}px)`,
-    ];
-    document.documentElement.animate(
-      {
-        clipPath: nextTheme === 'dark'
-          ? [...clipPath].reverse()
-          : clipPath,
-      },
-      {
-        duration: 400,
-        easing: 'ease-out',
-        fill: 'forwards',
-        pseudoElement: nextTheme === 'dark'
-          ? '::view-transition-old(root)'
-          : '::view-transition-new(root)',
-      },
-    );
-  });
-}
 
 function showNotice(message: string, duration = 3600) {
   notice.value = message;
@@ -424,12 +368,14 @@ function openSettings() {
 }
 
 watch(theme, (nextTheme) => {
+  document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.classList.toggle('dark', nextTheme === 'dark');
   try {
     localStorage.setItem('xtab-theme', nextTheme);
   } catch {
     // The active theme still works for this tab when persistence is unavailable.
   }
-});
+}, { immediate: true, flush: 'sync' });
 
 onMounted(async () => {
   await loadQuickLinks();
@@ -479,10 +425,9 @@ onUnmounted(() => {
 <template>
   <div class="app-shell">
     <NewTabHeader
-      :theme="theme"
+      v-model:theme="theme"
       :github-auth-state="githubAuthState"
       :github-user="githubUser"
-      @toggle-theme="toggleTheme"
       @open-settings="openSettings"
       @connect-github="connectGithub"
     />
