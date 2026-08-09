@@ -65,50 +65,50 @@ colors:
 typography:
   brand:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "20px"
+    fontSize: "22px"
     fontWeight: 750
     letterSpacing: "-0.025em"
   brand-compact:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "20px"
+    fontSize: "22px"
     fontWeight: 750
     letterSpacing: "-0.025em"
   search:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "14px"
+    fontSize: "16px"
     fontWeight: 400
   panel-heading:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "13px"
+    fontSize: "15px"
     fontWeight: 720
     lineHeight: 1.25
     letterSpacing: "-0.012em"
   feed-title:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 650
     lineHeight: 1.45
   repository-title:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 700
     lineHeight: 1.35
   body:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "10px"
+    fontSize: "12px"
     fontWeight: 400
     lineHeight: 1.6
   action:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "12px"
+    fontSize: "14px"
     fontWeight: 650
   label:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "10px"
+    fontSize: "12px"
     fontWeight: 650
   micro:
     fontFamily: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
-    fontSize: "9px"
+    fontSize: "11px"
     fontWeight: 400
     lineHeight: 1.3
 rounded:
@@ -266,14 +266,14 @@ The base palette is grayscale and mode-aware: light mode feels paperlike, dark m
 
 ### Hierarchy
 
-- **Brand** (750, 20px, -0.025em): The only identity-scale text.
-- **Search** (400, 14px): The dominant input is larger than content copy but remains operational rather than editorial.
-- **Panel Heading** (720, 13px, 1.25, -0.012em): Information-stream titles and signed-out state headings.
-- **Feed Title** (650, 11px, 1.35): One- or two-line RSS titles optimized for fast scanning.
-- **Repository Title** (700, 11px, 1.35): Single-line repository identifiers with truncation.
-- **Body** (400, 10px, 1.4–1.5): Descriptions and empty-state explanation, capped at 31ch where centered.
-- **Label** (650, 10px): Filters, compact actions, control labels, and footer actions.
-- **Micro** (400, 9px, 1.3): Preview status, provenance, timing, language, indices, and contribution legends.
+- **Brand** (750, 22px, -0.025em): The only identity-scale text.
+- **Search** (400, 16px): The dominant input is larger than content copy but remains operational rather than editorial.
+- **Panel Heading** (720, 15px, 1.25, -0.012em): Information-stream titles and signed-out state headings.
+- **Feed Title** (650, 13px, 1.35): One- or two-line RSS titles optimized for fast scanning.
+- **Repository Title** (700, 13px, 1.35): Single-line repository identifiers with truncation.
+- **Body** (400, 12px, 1.4–1.5): Descriptions and empty-state explanation, capped at 31ch where centered.
+- **Label** (650, 12px): Filters, compact actions, control labels, and footer actions.
+- **Micro** (400, 11px, 1.3): Preview status, provenance, timing, language, indices, and contribution legends.
 
 ### Named Rules
 
@@ -305,7 +305,7 @@ Borders are restrained one-pixel rules. A 3px focus outline with a 2px offset st
 
 ### Buttons
 
-- **Primary action:** A 38px-high, 12px-rounded black/white inversion with 13px horizontal padding, an optional icon, an 8px content gap, 12px type, and weight 650.
+- **Primary action:** A 38px-high, 12px-rounded black/white inversion with 13px horizontal padding, an optional icon, an 8px content gap, 14px type, and weight 650.
 - **Icon action:** A transparent 38px square with 12px corners; panel actions reduce to 30px with 9px corners. Hover adds the surface wash and promotes icon contrast.
 - **Hover / Focus / Press:** Primary hover increases contrast; icon hover uses the tonal wash; focus uses the global 3px ring and 2px offset; primary press translates one pixel in the action direction.
 - **Disabled:** Disabled buttons use the theme's disabled gray, `not-allowed` cursor, and 0.72 opacity.
@@ -313,13 +313,13 @@ Borders are restrained one-pixel rules. A 3px focus outline with a 2px offset st
 ### Chips
 
 - **Filter chip:** Unselected filters are transparent secondary text; selected filters invert to the structural accent surface. Repository filters are 30px high with 9px corners and 9px horizontal padding.
-- **RSS tab:** Category labels remain transparent and use a two-pixel rounded underline for the active state instead of a filled chip.
+- **RSS source tab:** Each configured Feed is represented by a horizontally scrollable transparent tab with a two-pixel rounded active underline. An inline Add Feed action expands into a URL field, while the footer removes the currently selected source.
 
 ### Cards / Containers
 
-- **Information panel:** A flat working sheet with a subtle one-pixel border, 16px corners, and clipped internal separators.
+- **Information panel:** A borderless translucent white working sheet with 16px corners, background blur, and clipped internal separators.
 - **Repository group:** A 14px-rounded nested grid uses the subtle-border color as a one-pixel gap, producing continuous rules without double borders.
-- **Repository card:** A compact flex card with a repository link, description, language metadata, tinted icon well, and an independent save toggle. Its height is an equal fraction of the available panel rather than a fixed minimum.
+- **Repository card:** A borderless muted-surface block with a repository link, complete description, language metadata, and Star/Watch/Fork statistics. Background tone, rather than an outline, defines the card against the translucent repository panel.
 
 ### Inputs / Fields
 

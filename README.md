@@ -27,7 +27,12 @@ WXT_GITHUB_CLIENT_ID=your_client_id
 
 ## RSS 来源
 
-在 `.env.local` 中通过 `WXT_RSS_FEED_URLS` 配置来源。简单场景可使用逗号分隔：
+首次使用时会默认加入以下来源：
+
+- `OpenAI News`（`https://openai.com/news/rss.xml`）
+- `Claude Code`（`https://code.claude.com/docs/en/whats-new/rss.xml`）
+
+在 `.env.local` 中可通过 `WXT_RSS_FEED_URLS` 追加来源，简单场景可使用逗号分隔：
 
 ```dotenv
 WXT_RSS_FEED_URLS=https://example.com/rss.xml,https://example.org/atom.xml
@@ -39,7 +44,7 @@ WXT_RSS_FEED_URLS=https://example.com/rss.xml,https://example.org/atom.xml
 WXT_RSS_FEED_URLS=[{"url":"https://example.com/feed.json","title":"示例 Feed","category":"开发"}]
 ```
 
-解析器支持 RSS 0.9x/2.0、RSS 1.0（RDF）、Atom 和 JSON Feed 1.0/1.1，也兼容常见的 Content、Dublin Core、Media RSS 与 enclosure 字段。首次读取新域名时，点击 RSS 面板的刷新按钮并允许对应域名；扩展不会在安装时直接申请所有网站的读取权限。
+解析器支持 RSS 0.9x/2.0、RSS 1.0（RDF）、Atom 和 JSON Feed 1.0/1.1，也兼容常见的 Content、Dublin Core、Media RSS 与 enclosure 字段。默认的 OpenAI News 和 Claude Code 会直接加载；首次读取用户追加的新域名时，点击 RSS 面板的刷新按钮并允许对应域名。扩展不会在安装时直接申请所有网站的读取权限。
 
 两个 composable 也可以独立使用：
 
