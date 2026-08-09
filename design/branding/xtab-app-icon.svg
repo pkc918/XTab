@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">XTab</title>
+  <rect x="8" y="8" width="112" height="112" rx="26" fill="#f5f5f5" />
+  <g fill="#141414" transform="translate(24 24) scale(2.5)">
+    <path d="M4.5 3h7.3l3.7 4.5v6.9c0 .6-.5 1.1-1.1 1.1h-2.3L3 7.1C1.1 5.5 2.2 3 4.5 3Z" />
+    <path d="M27.5 3h-7.3l-3.7 4.5v6.9c0 .6.5 1.1 1.1 1.1h2.3L29 7.1c1.9-1.6.8-4.1-1.5-4.1Z" />
+    <path d="M4.5 29h7.3l3.7-4.5v-6.9c0-.6-.5-1.1-1.1-1.1h-2.3L3 24.9C1.1 26.5 2.2 29 4.5 29Z" />
+    <path d="M27.5 29h-7.3l-3.7-4.5v-6.9c0-.6.5-1.1 1.1-1.1h2.3l9.1 8.4c1.9 1.6.8 4.1-1.5 4.1Z" />
+  </g>
+</svg>

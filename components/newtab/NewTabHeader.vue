@@ -1,30 +1,83 @@
 <script setup lang="ts">
+import { nextTick } from 'vue';
 import LucideIcon from '@/components/LucideIcon.vue';
 import GithubAuthButton from './GithubAuthButton.vue';
 import type { GithubAuthState, GithubUser, Theme } from './types';
 
-defineProps<{
+const props = defineProps<{
   theme: Theme;
   githubAuthState: GithubAuthState;
   githubUser: GithubUser | null;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (event: 'toggle-theme'): void;
   (event: 'open-settings'): void;
   (event: 'connect-github'): void;
 }>();
+
+function toggleTheme(event: MouseEvent) {
+  // @ts-expect-error View Transition is available only in supporting browsers.
+  const isAppearanceTransition = document.startViewTransition
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!isAppearanceTransition) {
+    emit('toggle-theme');
+    return;
+  }
+
+  const target = event.currentTarget as HTMLElement;
+  const themeIcon = target.querySelector('svg') ?? target;
+  const targetRect = themeIcon.getBoundingClientRect();
+  const x = targetRect.left + targetRect.width / 2;
+  const y = targetRect.top + targetRect.height / 2;
+  const switchingToDark = props.theme === 'light';
+  const root = document.documentElement;
+  const endRadius = Math.hypot(
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y),
+  );
+  const transition = document.startViewTransition(async () => {
+    root.classList.add('theme-transition-snapshot');
+    void root.offsetWidth;
+    emit('toggle-theme');
+    await nextTick();
+  });
+  void transition.ready.then(() => {
+    root.classList.remove('theme-transition-snapshot');
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ];
+    root.animate(
+      {
+        clipPath: switchingToDark
+          ? [...clipPath].reverse()
+          : clipPath,
+      },
+      {
+        duration: 400,
+        easing: 'ease-out',
+        fill: 'forwards',
+        pseudoElement: switchingToDark
+          ? '::view-transition-old(root)'
+          : '::view-transition-new(root)',
+      },
+    );
+  }, () => {
+    root.classList.remove('theme-transition-snapshot');
+  });
+  void transition.finished.then(
+    () => root.classList.remove('theme-transition-snapshot'),
+    () => root.classList.remove('theme-transition-snapshot'),
+  );
+}
 </script>
 
 <template>
   <header class="topbar">
     <a class="brand" href="./newtab.html" aria-label="返回 XTab 新标签页">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <path d="M3 5h8l6 8-5 6L3 5Z" />
-        <path d="M21 5h8L18 20l-5-6L21 5Z" />
-        <path d="M13 20l5-6 11 13h-8l-8-7Z" />
-        <path d="M12 19l5 6-2 2H3l9-8Z" />
-      </svg>
+      <img class="brand-mark" src="/branding/xtab-logo.svg" alt="" width="26" height="26" />
       <span>XTab</span>
     </a>
 
@@ -38,7 +91,7 @@ defineEmits<{
         :aria-pressed="theme === 'dark'"
         :aria-label="theme === 'light' ? '切换到暗色主题' : '切换到亮色主题'"
         :title="theme === 'light' ? '切换到暗色主题' : '切换到亮色主题'"
-        @click="$emit('toggle-theme')"
+        @click="toggleTheme"
       >
         <LucideIcon :name="theme === 'light' ? 'sun' : 'moon'" :size="18" />
       </button>
