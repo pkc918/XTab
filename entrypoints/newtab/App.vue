@@ -139,14 +139,60 @@ const visibleQuickLinks = computed(() => {
 let noticeTimer: ReturnType<typeof setTimeout> | undefined;
 
 document.documentElement.dataset.theme = theme.value;
+document.documentElement.classList.toggle('dark', theme.value === 'dark');
 
 function setTheme(nextTheme: Theme) {
   theme.value = nextTheme;
   document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.classList.toggle('dark', nextTheme === 'dark');
 }
 
-function toggleTheme() {
-  setTheme(theme.value === 'light' ? 'dark' : 'light');
+function toggleTheme(event: MouseEvent) {
+  // @ts-expect-error View Transition is available only in supporting browsers.
+  const isAppearanceTransition = document.startViewTransition
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!isAppearanceTransition) {
+    setTheme(theme.value === 'light' ? 'dark' : 'light');
+    return;
+  }
+
+  const button = event.currentTarget as HTMLElement;
+  const target = button.querySelector('svg') ?? button;
+  const targetRect = target.getBoundingClientRect();
+  const snapshotScale = window.devicePixelRatio || 1;
+  const x = (targetRect.left + targetRect.width / 2) * snapshotScale;
+  const y = (targetRect.top + targetRect.height / 2) * snapshotScale;
+  const endRadius = Math.hypot(
+    Math.max(x, innerWidth * snapshotScale - x),
+    Math.max(y, innerHeight * snapshotScale - y),
+  );
+  const nextTheme: Theme = theme.value === 'light' ? 'dark' : 'light';
+  const transition = document.startViewTransition(async () => {
+    setTheme(nextTheme);
+    await nextTick();
+  });
+  void transition.ready.then(() => {
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ];
+    document.documentElement.animate(
+      {
+        clipPath: nextTheme === 'dark'
+          ? [...clipPath].reverse()
+          : clipPath,
+      },
+      {
+        duration: 400,
+        easing: 'ease-out',
+        fill: 'forwards',
+        pseudoElement: nextTheme === 'dark'
+          ? '::view-transition-old(root)'
+          : '::view-transition-new(root)',
+      },
+    );
+  });
 }
 
 function showNotice(message: string, duration = 3600) {
