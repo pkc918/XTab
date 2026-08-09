@@ -1,47 +1,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import LucideIcon from '@/components/LucideIcon.vue';
+import { resolveWebUrl } from '@/utils/urls';
 
 const searchQuery = ref('');
 const searchInput = ref<HTMLInputElement | null>(null);
 const shortcutLabel = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent) ? '⌘ K' : 'Ctrl K';
-
-function resolveDirectUrl(value: string) {
-  if (/^https?:\/\//i.test(value)) {
-    try {
-      return new URL(value).href;
-    } catch {
-      return null;
-    }
-  }
-
-  if (/\s/.test(value)) return null;
-
-  const candidate = value.replace(/^\/\//, '');
-  const authority = candidate.split(/[/?#]/, 1)[0];
-  const bracketedHost = authority.match(/^\[([^\]]+)](?::(\d+))?$/);
-  const regularHost = authority.match(/^([^:]+)(?::(\d+))?$/);
-
-  if (!bracketedHost && !regularHost) return null;
-
-  const hostname = (bracketedHost?.[1] ?? regularHost?.[1] ?? '').toLowerCase();
-  const hasPort = Boolean(bracketedHost?.[2] ?? regularHost?.[2]);
-  const hasPath = candidate.length > authority.length;
-  const isIpv6 = Boolean(bracketedHost && hostname.includes(':'));
-  const isIpv4 = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(hostname);
-  const isLocalhost = hostname === 'localhost' || hostname.endsWith('.localhost');
-  const isLoopback = isLocalhost || hostname === '0.0.0.0' || hostname.startsWith('127.') || hostname === '::1';
-  const isDottedHost = hostname.includes('.') && /^[a-z0-9.-]+$/i.test(hostname);
-  const isIntranetHost = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(hostname) && (hasPort || hasPath);
-
-  if (!isIpv6 && !isIpv4 && !isLocalhost && !isDottedHost && !isIntranetHost) return null;
-
-  try {
-    return new URL(`${isLoopback ? 'http' : 'https'}://${candidate}`).href;
-  } catch {
-    return null;
-  }
-}
 
 function submitSearch() {
   const query = searchQuery.value.trim();
@@ -50,7 +14,14 @@ function submitSearch() {
     return;
   }
 
-  window.location.href = resolveDirectUrl(query) ?? `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  window.location.href = resolveWebUrl(query) ?? `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
+function submitAiSearch() {
+  const query = searchQuery.value.trim();
+  window.location.href = query
+    ? `https://www.google.com/search?udm=50&q=${encodeURIComponent(query)}`
+    : 'https://www.google.com/ai';
 }
 
 function handleGlobalShortcut(event: KeyboardEvent) {
@@ -82,8 +53,18 @@ onUnmounted(() => window.removeEventListener('keydown', handleGlobalShortcut));
       aria-label="搜索或输入网址"
       aria-keyshortcuts="Meta+K Control+K /"
     />
+    <button
+      class="search-ai-mode-button"
+      type="button"
+      aria-label="使用 Google AI Mode 搜索"
+      title="Google AI Mode"
+      @click="submitAiSearch"
+    >
+      <LucideIcon name="sparkles" :size="15" />
+      <span>AI Mode</span>
+    </button>
     <kbd aria-hidden="true">{{ shortcutLabel }}</kbd>
-    <button type="submit" aria-label="开始搜索" title="开始搜索">
+    <button class="search-submit-button" type="submit" aria-label="开始搜索" title="开始搜索">
       <LucideIcon name="arrow" :size="17" />
     </button>
   </form>

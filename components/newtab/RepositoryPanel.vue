@@ -1,60 +1,163 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import LucideIcon from '@/components/LucideIcon.vue';
 import RepositoryCard from './RepositoryCard.vue';
-import type { RepoFilter, Repository } from './types';
+import type { TrendingRepo } from './types';
 
-const props = defineProps<{ repositories: Repository[] }>();
-const filters: RepoFilter[] = ['为你', '趋势', '新项目'];
-const activeFilter = ref<RepoFilter>('为你');
-const savedRepos = ref(new Set<string>());
+const GITHUB_TRENDING_LANGUAGES = [
+  '全部',
+  'TypeScript',
+  'JavaScript',
+  'Python',
+  'Java',
+  'Go',
+  'Rust',
+  'Ruby',
+  'C++',
+  'C',
+  'C#',
+  'Swift',
+  'Kotlin',
+  'Dart',
+  'PHP',
+  'Vue',
+  'HTML',
+  'CSS',
+  'Shell',
+  'Lua',
+  'Zig',
+  'Scala',
+  'Elixir',
+  'Haskell',
+  'Clojure',
+  'R',
+  'Objective-C',
+  'Assembly',
+  'Perl',
+  'Julia',
+  'Nim',
+  'OCaml',
+  'Crystal',
+  'Erlang',
+  'Groovy',
+  'CoffeeScript',
+  'F#',
+  'D',
+  'Haxe',
+  'Vala',
+  'PureScript',
+  'Elm',
+  'Reason',
+  'Solidity',
+  'SQL',
+  'PowerShell',
+  'Makefile',
+  'CMake',
+  'Emacs Lisp',
+  'Vim Script',
+  'TeX',
+  'Matlab',
+  'Nix',
+  'HCL',
+  'YAML',
+  'TOML',
+  'JSON',
+  'GraphQL',
+  'Roff',
+  'Batchfile',
+  'GLSL',
+  'HLSL',
+  'WebAssembly',
+  'MDX',
+  'Markdown',
+  'Dockerfile',
+  'Jupyter Notebook',
+] as const;
 
-const filteredRepos = computed(() => activeFilter.value === '为你'
-  ? props.repositories
-  : props.repositories.filter((repo) => repo.group === activeFilter.value));
-const repoStatus = computed(() => `${activeFilter.value}筛选，共 ${filteredRepos.value.length} 个示例仓库。`);
+const props = defineProps<{
+  repos: readonly TrendingRepo[];
+  loading: boolean;
+  error: string | null;
+}>();
 
-function toggleSaved(name: string) {
-  const next = new Set(savedRepos.value);
-  if (next.has(name)) next.delete(name);
-  else next.add(name);
-  savedRepos.value = next;
-}
+const language = defineModel<string>('language', { default: '全部' });
+defineEmits<{ (event: 'refresh'): void }>();
+
+const filteredRepos = computed(() =>
+  language.value === '全部'
+    ? props.repos
+    : props.repos.filter((repo) => repo.language === language.value),
+);
+
+const isInitialLoad = computed(() => props.loading && props.repos.length === 0);
+const isRefreshing = computed(() => props.loading && props.repos.length > 0);
 </script>
 
 <template>
   <section class="panel repo-panel" aria-labelledby="repo-title">
-    <div class="panel-heading repo-heading">
-      <div class="panel-title-group">
+    <div class="panel-top">
+      <div class="panel-header">
         <span class="panel-icon panel-icon--repo"><LucideIcon name="github" /></span>
         <div>
-          <h2 id="repo-title">GitHub 推荐</h2>
-          <span>示例推荐 · 非实时</span>
+          <h2 id="repo-title">GitHub Trending</h2>
+          <span>发现热门开源项目</span>
         </div>
       </div>
-      <div class="filter-row" role="group" aria-label="GitHub 推荐筛选">
-        <button
-          v-for="filter in filters"
-          :key="filter"
-          type="button"
-          :aria-pressed="activeFilter === filter"
-          :class="{ active: activeFilter === filter }"
-          @click="activeFilter = filter"
+      <div class="panel-controls">
+        <select
+          v-model="language"
+          class="repo-language-select"
+          aria-label="按编程语言筛选"
         >
-          {{ filter }}
+          <option v-for="lang in GITHUB_TRENDING_LANGUAGES" :key="lang" :value="lang">
+            {{ lang === '全部' ? '全部语言' : lang }}
+          </option>
+        </select>
+        <button
+          type="button"
+          class="panel-refresh-button"
+          aria-label="刷新 Trending"
+          title="刷新"
+          :disabled="loading"
+          @click="$emit('refresh')"
+        >
+          <LucideIcon
+            name="refresh"
+            :size="15"
+            :class="{ 'panel-refresh-icon--spinning': loading }"
+          />
         </button>
       </div>
     </div>
 
-    <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ repoStatus }}</p>
+    <div class="repo-grid" :class="{ 'repo-grid--refreshing': isRefreshing }">
+      <!-- Initial loading skeleton -->
+      <template v-if="isInitialLoad">
+        <div v-for="n in 6" :key="'sk-' + n" class="repo-item repo-item--skeleton">
+          <span class="repo-skeleton-line repo-skeleton-line--1"></span>
+          <span class="repo-skeleton-line repo-skeleton-line--2"></span>
+          <span class="repo-skeleton-line repo-skeleton-line--3"></span>
+        </div>
+      </template>
 
-    <div class="repo-grid">
+      <!-- Error (only when no data) -->
+      <div v-else-if="error && repos.length === 0" class="repo-grid-message" role="status">
+        <span class="empty-icon"><LucideIcon name="refresh" :size="18" /></span>
+        <p>{{ error }}</p>
+        <button type="button" @click="$emit('refresh')">重试</button>
+      </div>
+
+      <!-- Empty after load -->
+      <div v-else-if="!loading && filteredRepos.length === 0" class="repo-grid-message">
+        <span class="empty-icon"><LucideIcon name="filter" :size="18" /></span>
+        <p>没有找到 {{ language === '全部' ? '' : language }} 仓库。</p>
+      </div>
+
+      <!-- Cards (persist during refresh) -->
       <RepositoryCard
         v-for="repo in filteredRepos"
-        :key="repo.name"
+        :key="repo.id"
         :repo="repo"
-        :saved="savedRepos.has(repo.name)"
-        @toggle-save="toggleSaved(repo.name)"
       />
     </div>
 

@@ -1,10 +1,9 @@
+import type { Component } from 'vue';
 import type { IconName } from '@/components/icons/registry';
 
 export type Theme = 'light' | 'dark';
 export type GithubAuthState = 'signed-out' | 'authorizing' | 'signed-in';
 export type FeedCategory = '全部' | '开发' | '设计' | 'AI';
-export type RepoFilter = '为你' | '趋势' | '新项目';
-
 export interface GithubUser {
   id: number;
   login: string;
@@ -42,6 +41,7 @@ export interface QuickLink {
   href: string;
   icon: IconName;
   accent: string;
+  removable?: boolean;
 }
 
 export interface RssItem {
@@ -49,17 +49,36 @@ export interface RssItem {
   title: string;
   category: Exclude<FeedCategory, '全部'>;
   source: string;
+  sourceUrl: string;
   detail: string;
   accent: string;
   href?: string;
   publishedAt?: string;
 }
 
+export interface RssSourceTab {
+  url: string;
+  title: string;
+  icon?: Component;
+}
+
 export interface Repository {
   name: string;
   description: string;
   language: string;
-  group: RepoFilter;
+  group: string;
   href: string;
+  accent: string;
+}
+
+export interface TrendingRepo {
+  id: number;
+  name: string;
+  description: string;
+  language: string;
+  stars: number;
+  watchers: number;
+  forks: number;
+  url: string;
   accent: string;
 }

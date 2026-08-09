@@ -1,19 +1,46 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import AnthropicIcon from '@iconify-vue/simple-icons/anthropic';
+import OpenAiIcon from '@iconify-vue/simple-icons/openai';
 import CommandZone from '@/components/newtab/CommandZone.vue';
 import GithubDeviceAuthDialog from '@/components/newtab/GithubDeviceAuthDialog.vue';
 import GithubProfilePanel from '@/components/newtab/GithubProfilePanel.vue';
 import NewTabHeader from '@/components/newtab/NewTabHeader.vue';
+import QuickLinkDialog from '@/components/newtab/QuickLinkDialog.vue';
+import QuickLinkDeleteDialog from '@/components/newtab/QuickLinkDeleteDialog.vue';
 import RepositoryPanel from '@/components/newtab/RepositoryPanel.vue';
 import RssPanel from '@/components/newtab/RssPanel.vue';
 import ToastNotice from '@/components/newtab/ToastNotice.vue';
-import type { FeedCategory, RssItem, Theme } from '@/components/newtab/types';
+import type { FeedCategory, QuickLink, RssItem, RssSourceTab, Theme } from '@/components/newtab/types';
 import { useGithubAuth } from '@/composables/useGithubAuth';
 import { useGithubProfile } from '@/composables/useGithubProfile';
 import { useRss, type RssFeedSourceInput, type RssStreamItem } from '@/composables/useRss';
-import { quickLinks, repositories } from './data';
+import { useGithubTrending } from '@/composables/useGithubTrending';
+import { createQuickLink, parseStoredQuickLinks, serializeQuickLinks } from '@/utils/quickLinks';
+import { webUrlKey } from '@/utils/urls';
+import { quickLinks as defaultQuickLinks } from './data';
 
 type ArticleCategory = Exclude<FeedCategory, '全部'>;
+const rssSourcesStorageKey = 'xtab-rss-sources';
+const rssDefaultsVersionStorageKey = 'xtab-rss-defaults-version';
+const quickLinksStorageKey = 'xtab-quick-links';
+const hiddenQuickLinksStorageKey = 'xtab-hidden-quick-links';
+const currentRssDefaultsVersion = 2;
+const defaultOpenAiRssUrl = 'https://openai.com/news/rss.xml';
+const legacyOpenAiRssUrl = 'https://openrss.org/openai.com/news/rss.xml';
+const defaultClaudeRssUrl = 'https://code.claude.com/docs/en/whats-new/rss.xml';
+const defaultRssSources: RssFeedSourceInput[] = [
+  {
+    url: defaultOpenAiRssUrl,
+    title: 'OpenAI News',
+    category: 'AI',
+  },
+  {
+    url: defaultClaudeRssUrl,
+    title: 'Claude Code',
+    category: 'AI',
+  },
+];
 
 const rssCategoryAccents: Record<ArticleCategory, string> = {
   开发: '#06b6d4',
@@ -23,23 +50,30 @@ const rssCategoryAccents: Record<ArticleCategory, string> = {
 
 function configuredRssSources(): RssFeedSourceInput[] {
   const value = String(import.meta.env.WXT_RSS_FEED_URLS ?? '').trim();
-  if (!value) return [];
+  if (!value) return defaultRssSources;
 
   if (value.startsWith('[')) {
     try {
       const parsed = JSON.parse(value) as unknown;
       if (Array.isArray(parsed)) {
-        return parsed.filter((source: unknown): source is RssFeedSourceInput => (
-          typeof source === 'string'
-          || (typeof source === 'object' && source !== null && typeof (source as { url?: unknown }).url === 'string')
-        ));
+        return [...defaultRssSources, ...parsed.filter(isRssFeedSourceInput)];
       }
     } catch {
       // Fall back to the comma/newline format below.
     }
   }
 
-  return value.split(/[\n,]+/).map((source) => source.trim()).filter(Boolean);
+  return [
+    ...defaultRssSources,
+    ...value.split(/[\n,]+/).map((source) => source.trim()).filter(Boolean),
+  ];
+}
+
+function isRssFeedSourceInput(source: unknown): source is RssFeedSourceInput {
+  return typeof source === 'string'
+    || (typeof source === 'object'
+      && source !== null
+      && typeof (source as { url?: unknown }).url === 'string');
 }
 
 function inferRssCategory(item: RssStreamItem): ArticleCategory {
@@ -88,6 +122,20 @@ function getInitialTheme(): Theme {
 
 const theme = ref<Theme>(getInitialTheme());
 const notice = ref('');
+const customQuickLinks = ref<QuickLink[]>([]);
+const hiddenQuickLinkKeys = ref<string[]>([]);
+const quickLinkDialogOpen = ref(false);
+const pendingQuickLinkRemoval = ref<QuickLink | null>(null);
+const quickLinkDeleteBusy = ref(false);
+const visibleQuickLinks = computed(() => {
+  const hidden = new Set(hiddenQuickLinkKeys.value);
+  return [
+    ...defaultQuickLinks
+      .filter((link) => !hidden.has(webUrlKey(link.href) ?? ''))
+      .map((link) => ({ ...link, removable: true })),
+    ...customQuickLinks.value,
+  ];
+});
 let noticeTimer: ReturnType<typeof setTimeout> | undefined;
 
 document.documentElement.dataset.theme = theme.value;
@@ -107,6 +155,104 @@ function showNotice(message: string, duration = 3600) {
   noticeTimer = setTimeout(() => {
     notice.value = '';
   }, duration);
+}
+
+async function persistQuickLinks(
+  links = customQuickLinks.value,
+  hiddenKeys = hiddenQuickLinkKeys.value,
+) {
+  try {
+    await browser.storage.local.set({
+      [quickLinksStorageKey]: serializeQuickLinks(links),
+      [hiddenQuickLinksStorageKey]: hiddenKeys,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function addQuickLink(value: { name: string; href: string }) {
+  const link = createQuickLink(value.name, value.href);
+  if (!link) {
+    showNotice('网站地址无效，请检查后重试。');
+    return;
+  }
+
+  const key = webUrlKey(link.href);
+  if (visibleQuickLinks.value.some((item) => webUrlKey(item.href) === key)) {
+    showNotice('这个网站已经在快捷入口中。');
+    return;
+  }
+
+  customQuickLinks.value = [...customQuickLinks.value, link];
+  quickLinkDialogOpen.value = false;
+  const persisted = await persistQuickLinks();
+  showNotice(persisted
+    ? `已添加「${link.name}」。`
+    : `已添加「${link.name}」，但暂时无法保存到本地。`);
+}
+
+async function removeQuickLink() {
+  const link = pendingQuickLinkRemoval.value;
+  const key = link ? webUrlKey(link.href) : null;
+  if (!link?.removable || !key) {
+    pendingQuickLinkRemoval.value = null;
+    return;
+  }
+
+  const isCustomLink = customQuickLinks.value.some((item) => webUrlKey(item.href) === key);
+  const isDefaultLink = defaultQuickLinks.some((item) => webUrlKey(item.href) === key);
+  if (!isCustomLink && !isDefaultLink) {
+    pendingQuickLinkRemoval.value = null;
+    return;
+  }
+
+  const remainingLinks = isCustomLink
+    ? customQuickLinks.value.filter((item) => webUrlKey(item.href) !== key)
+    : customQuickLinks.value;
+  const nextHiddenKeys = isDefaultLink && !hiddenQuickLinkKeys.value.includes(key)
+    ? [...hiddenQuickLinkKeys.value, key]
+    : hiddenQuickLinkKeys.value;
+
+  quickLinkDeleteBusy.value = true;
+  const persisted = await persistQuickLinks(remainingLinks, nextHiddenKeys);
+  quickLinkDeleteBusy.value = false;
+
+  if (!persisted) {
+    pendingQuickLinkRemoval.value = null;
+    showNotice(`无法删除「${link.name}」，本地存储暂时不可用。`);
+    return;
+  }
+
+  customQuickLinks.value = remainingLinks;
+  hiddenQuickLinkKeys.value = nextHiddenKeys;
+  pendingQuickLinkRemoval.value = null;
+  await nextTick();
+  document.querySelector<HTMLButtonElement>('.quick-link-add-button')?.focus();
+  showNotice(`已删除「${link.name}」。`);
+}
+
+async function loadQuickLinks() {
+  try {
+    const stored = await browser.storage.local.get([
+      quickLinksStorageKey,
+      hiddenQuickLinksStorageKey,
+    ]);
+    const defaultKeys = new Set(defaultQuickLinks.map((link) => webUrlKey(link.href)).filter(Boolean));
+    const savedHiddenKeys = Array.isArray(stored[hiddenQuickLinksStorageKey])
+      ? stored[hiddenQuickLinksStorageKey]
+        .filter((value): value is string => typeof value === 'string')
+        .map((value) => webUrlKey(value))
+        .filter((value): value is string => Boolean(value && defaultKeys.has(value)))
+      : [];
+    hiddenQuickLinkKeys.value = [...new Set(savedHiddenKeys)];
+    const hidden = new Set(hiddenQuickLinkKeys.value);
+    const visibleDefaults = defaultQuickLinks.filter((link) => !hidden.has(webUrlKey(link.href) ?? ''));
+    customQuickLinks.value = parseStoredQuickLinks(stored[quickLinksStorageKey], visibleDefaults);
+  } catch {
+    showNotice('无法读取已保存的快捷网站，本次将只显示默认入口。');
+  }
 }
 
 const {
@@ -134,25 +280,59 @@ const {
 } = useGithubProfile(githubUser, githubFetch);
 const {
   sources: rssSources,
+  feeds: rssFeeds,
   items: rssStreamItems,
   errors: rssErrors,
   isLoading: rssIsLoading,
   refresh: refreshRssFeeds,
-} = useRss(configuredRssSources());
-const rssItems = computed<RssItem[]>(() => rssStreamItems.value.slice(0, 8).map((item) => {
+  setSources: setRssSources,
+  addSource: addRssSource,
+  removeSource: removeRssSource,
+} = useRss(configuredRssSources(), { immediate: false });
+const rssItems = computed<RssItem[]>(() => rssStreamItems.value.map((item) => {
   const category = inferRssCategory(item);
   return {
     id: `${item.sourceUrl}:${item.id}`,
     title: item.title,
     category,
     source: item.feedTitle,
+    sourceUrl: item.sourceUrl,
     detail: feedItemDetail(item),
     accent: rssCategoryAccents[category],
     href: item.url || item.externalUrl,
     publishedAt: item.publishedAt,
   };
 }));
+const rssSourceTabs = computed<RssSourceTab[]>(() => rssSources.value.map((source) => {
+  const loaded = rssFeeds.value.find((feed) => feed.source.url === source.url);
+  let fallbackTitle = source.url;
+  try {
+    fallbackTitle = new URL(source.url).hostname;
+  } catch {
+    // Sources are normalized before reaching this point; retain the URL as a safe fallback.
+  }
+  return {
+    url: source.url,
+    title: source.title || loaded?.feed.title || fallbackTitle,
+    icon: source.url === defaultOpenAiRssUrl
+      ? OpenAiIcon
+      : source.url === defaultClaudeRssUrl
+        ? AnthropicIcon
+        : undefined,
+  };
+}));
 const rssErrorMessage = computed(() => rssErrors.value[0]?.message ?? '');
+
+async function persistRssSources() {
+  try {
+    await browser.storage.local.set({
+      [rssSourcesStorageKey]: rssSources.value.map((source) => ({ ...source })),
+      [rssDefaultsVersionStorageKey]: currentRssDefaultsVersion,
+    });
+  } catch {
+    showNotice('RSS 来源已更新，但暂时无法保存到本地。');
+  }
+}
 
 async function refreshRss() {
   const result = await refreshRssFeeds({ force: true, requestPermissions: true });
@@ -163,12 +343,39 @@ async function refreshRss() {
   }
 }
 
-function openSettings() {
-  showNotice('设置与快捷入口配置将在数据层接入后开放。');
+async function addRssFeed(url: string) {
+  if (!addRssSource(url)) {
+    showNotice('这个 Feed 已存在，或地址无效。');
+    return;
+  }
+
+  const refreshPromise = refreshRssFeeds({ force: true, requestPermissions: true });
+  await persistRssSources();
+  const result = await refreshPromise;
+  if (result.errors.length > 0) {
+    showNotice(result.errors[0].message, 7_000);
+    return;
+  }
+  showNotice('Feed 已添加。');
 }
 
-function openRssSettings() {
-  showNotice('请在 .env.local 的 WXT_RSS_FEED_URLS 中配置订阅来源，然后重新构建扩展。', 7_000);
+async function removeRssFeed(url: string) {
+  const sourceTitle = rssSourceTabs.value.find((source) => source.url === url)?.title ?? 'Feed';
+  if (!removeRssSource(url)) return;
+  await persistRssSources();
+  showNotice(`已删除「${sourceTitle}」。`);
+}
+
+const trendingLanguage = ref('全部');
+const {
+  repos: trendingRepos,
+  loading: trendingLoading,
+  error: trendingError,
+  refresh: refreshTrending,
+} = useGithubTrending(trendingLanguage);
+
+function openSettings() {
+  showNotice('更多设置与快捷入口管理仍在完善中；可使用搜索框下方的「添加」新增网站。');
 }
 
 watch(theme, (nextTheme) => {
@@ -177,6 +384,46 @@ watch(theme, (nextTheme) => {
   } catch {
     // The active theme still works for this tab when persistence is unavailable.
   }
+});
+
+onMounted(async () => {
+  await loadQuickLinks();
+  try {
+    const stored = await browser.storage.local.get([
+      rssSourcesStorageKey,
+      rssDefaultsVersionStorageKey,
+    ]);
+    const savedSources = stored[rssSourcesStorageKey];
+    if (Array.isArray(savedSources)) {
+      const validSources = savedSources.filter(isRssFeedSourceInput);
+      const hasLegacyOpenAiSource = validSources.some((source) => (
+        typeof source === 'string'
+          ? source === legacyOpenAiRssUrl
+          : source.url === legacyOpenAiRssUrl
+      ));
+      const migratedSources = validSources.map((source) => {
+        if (typeof source === 'string') {
+          return source === legacyOpenAiRssUrl ? defaultOpenAiRssUrl : source;
+        }
+        return source.url === legacyOpenAiRssUrl
+          ? { ...source, url: defaultOpenAiRssUrl }
+          : source;
+      });
+      const shouldAddClaudeSource = stored[rssDefaultsVersionStorageKey] !== currentRssDefaultsVersion
+        && !migratedSources.some((source) => (
+          typeof source === 'string'
+            ? source === defaultClaudeRssUrl
+            : source.url === defaultClaudeRssUrl
+        ));
+      setRssSources(shouldAddClaudeSource
+        ? [...migratedSources, defaultRssSources[1]]
+        : migratedSources);
+      if (hasLegacyOpenAiSource || shouldAddClaudeSource) await persistRssSources();
+    }
+  } catch {
+    showNotice('无法读取已保存的 RSS 来源，将使用默认配置。');
+  }
+  await refreshRssFeeds();
 });
 
 onUnmounted(() => {
@@ -196,19 +443,30 @@ onUnmounted(() => {
     />
 
     <main>
-      <CommandZone :links="quickLinks" @open-settings="openSettings" />
+      <CommandZone
+        :links="visibleQuickLinks"
+        @add-link="quickLinkDialogOpen = true"
+        @remove-link="pendingQuickLinkRemoval = $event"
+      />
 
       <section class="dashboard" aria-label="XTab 信息工作台">
         <RssPanel
           :items="rssItems"
+          :sources="rssSourceTabs"
           :is-loading="rssIsLoading"
-          :has-sources="rssSources.length > 0"
           :error-message="rssErrorMessage"
           @notify="showNotice"
           @refresh="refreshRss"
-          @open-settings="openRssSettings"
+          @add-feed="addRssFeed"
+          @remove-feed="removeRssFeed"
         />
-        <RepositoryPanel :repositories="repositories" />
+        <RepositoryPanel
+          v-model:language="trendingLanguage"
+          :repos="trendingRepos"
+          :loading="trendingLoading"
+          :error="trendingError"
+          @refresh="refreshTrending"
+        />
         <GithubProfilePanel
           :github-auth-state="githubAuthState"
           :github-user="githubUser"
@@ -224,6 +482,19 @@ onUnmounted(() => {
         />
       </section>
     </main>
+
+    <QuickLinkDialog
+      :open="quickLinkDialogOpen"
+      :existing-links="visibleQuickLinks"
+      @add="addQuickLink"
+      @close="quickLinkDialogOpen = false"
+    />
+    <QuickLinkDeleteDialog
+      :link="pendingQuickLinkRemoval"
+      :busy="quickLinkDeleteBusy"
+      @confirm="removeQuickLink"
+      @cancel="pendingQuickLinkRemoval = null"
+    />
 
     <GithubDeviceAuthDialog
       :authorization="deviceAuthorization"

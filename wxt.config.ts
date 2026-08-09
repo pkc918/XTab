@@ -10,6 +10,8 @@ export default defineConfig({
     host_permissions: [
       'https://github.com/*',
       'https://api.github.com/*',
+      'https://openai.com/*',
+      'https://code.claude.com/*',
     ],
     optional_host_permissions: [
       'http://*/*',

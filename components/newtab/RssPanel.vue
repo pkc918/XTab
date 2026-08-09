@@ -1,92 +1,162 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import LucideIcon from '@/components/LucideIcon.vue';
 import RssFeedItem from './RssFeedItem.vue';
-import type { FeedCategory, RssItem } from './types';
+import type { RssItem, RssSourceTab } from './types';
 
 const props = withDefaults(defineProps<{
   items: RssItem[];
+  sources: readonly RssSourceTab[];
   isLoading?: boolean;
-  hasSources?: boolean;
   errorMessage?: string;
 }>(), {
   isLoading: false,
-  hasSources: false,
   errorMessage: '',
 });
 const emit = defineEmits<{
   (event: 'notify', message: string): void;
-  (event: 'open-settings'): void;
   (event: 'refresh'): void;
+  (event: 'add-feed', url: string): void;
+  (event: 'remove-feed', url: string): void;
 }>();
 
-const categories: FeedCategory[] = ['全部', '开发', '设计', 'AI'];
-const activeFeed = ref<FeedCategory>('全部');
-const filteredItems = computed(() => activeFeed.value === '全部'
-  ? props.items
-  : props.items.filter((item) => item.category === activeFeed.value));
+const activeSourceUrl = ref('');
+const isAddingFeed = ref(false);
+const newFeedUrl = ref('');
+const newFeedInput = ref<HTMLInputElement | null>(null);
+
+watch(() => props.sources, (sources) => {
+  if (sources.length === 0) {
+    activeSourceUrl.value = '';
+    return;
+  }
+  if (!sources.some((source) => source.url === activeSourceUrl.value)) {
+    activeSourceUrl.value = sources[0].url;
+  }
+}, { immediate: true });
+
+const activeSource = computed(() => (
+  props.sources.find((source) => source.url === activeSourceUrl.value) ?? null
+));
+const filteredItems = computed(() => props.items
+  .filter((item) => item.sourceUrl === activeSourceUrl.value));
 const panelSubtitle = computed(() => {
   if (props.isLoading) return '正在更新';
-  if (!props.hasSources) return '未配置来源';
-  if (props.items.length > 0) return `${props.items.length} 篇最新内容`;
+  if (props.sources.length === 0) return '未添加来源';
+  if (activeSource.value) return activeSource.value.title;
   if (props.errorMessage) return '更新失败';
   return '暂无内容';
 });
 const emptyTitle = computed(() => {
-  if (!props.hasSources) return '还没有 RSS 来源';
+  if (props.sources.length === 0) return '还没有 RSS 来源';
   if (props.errorMessage) return '暂时无法读取订阅';
-  if (activeFeed.value !== '全部') return `“${activeFeed.value}”分类暂无内容`;
-  return '订阅中暂无内容';
+  return `“${activeSource.value?.title ?? '当前 Feed'}”暂无内容`;
 });
 const emptyDescription = computed(() => {
-  if (!props.hasSources) return '在 .env.local 中配置 WXT_RSS_FEED_URLS 后即可开始阅读。';
+  if (props.sources.length === 0) return '点击 Add Feed，输入 RSS 或 Atom 地址即可开始阅读。';
   if (props.errorMessage) return props.errorMessage;
   return '刷新后会在这里显示最新条目。';
 });
 const feedStatus = computed(() => (
   props.isLoading
     ? '正在刷新 RSS 内容。'
-    : `${activeFeed.value}分类，共 ${filteredItems.value.length} 篇文章。`
+    : `${activeSource.value?.title ?? '当前 Feed'}，共 ${filteredItems.value.length} 篇文章。`
 ));
+
+async function openAddFeed() {
+  newFeedUrl.value = '';
+  isAddingFeed.value = true;
+  await nextTick();
+  newFeedInput.value?.focus({ preventScroll: true });
+}
+
+function cancelAddFeed() {
+  newFeedUrl.value = '';
+  isAddingFeed.value = false;
+}
+
+function submitFeed() {
+  const value = newFeedUrl.value.trim();
+  if (!value) {
+    emit('notify', '请输入 Feed 地址。');
+    return;
+  }
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error();
+    activeSourceUrl.value = url.href;
+    emit('add-feed', url.href);
+    cancelAddFeed();
+  } catch {
+    emit('notify', '请输入有效的 HTTP 或 HTTPS Feed 地址。');
+  }
+}
 </script>
 
 <template>
   <aside class="panel feed-panel" aria-labelledby="feed-title" :aria-busy="isLoading">
-    <div class="panel-heading">
-      <div class="panel-title-group">
+    <div class="panel-top">
+      <div class="panel-header">
         <span class="panel-icon panel-icon--rss"><LucideIcon name="rss" /></span>
         <div>
           <h2 id="feed-title">RSS 阅读</h2>
           <span>{{ panelSubtitle }}</span>
         </div>
       </div>
-      <div class="panel-actions">
+      <div class="panel-controls">
         <button
           type="button"
+          class="panel-refresh-button"
           :disabled="isLoading"
           :aria-label="isLoading ? '正在刷新 RSS' : '刷新 RSS'"
           :title="isLoading ? '正在刷新' : '刷新 RSS'"
           @click="emit('refresh')"
         >
-          <LucideIcon name="refresh" :size="16" :class="{ 'feed-refresh-icon--spinning': isLoading }" />
-        </button>
-        <button type="button" aria-label="管理 RSS 来源" title="管理 RSS 来源" @click="emit('open-settings')">
-          <LucideIcon name="filter" :size="16" />
+          <LucideIcon name="refresh" :size="15" :class="{ 'panel-refresh-icon--spinning': isLoading }" />
         </button>
       </div>
     </div>
 
-    <div class="tab-row" role="group" aria-label="RSS 分类筛选">
-      <button
-        v-for="category in categories"
-        :key="category"
-        type="button"
-        :aria-pressed="activeFeed === category"
-        :class="{ active: activeFeed === category }"
-        @click="activeFeed = category"
-      >
-        {{ category }}
-      </button>
+    <div class="tab-row rss-source-tabs">
+      <form v-if="isAddingFeed" class="rss-add-feed-form" @submit.prevent="submitFeed">
+        <input
+          ref="newFeedInput"
+          v-model="newFeedUrl"
+          type="url"
+          inputmode="url"
+          autocomplete="url"
+          placeholder="https://example.com/feed.xml"
+          aria-label="Feed 地址"
+          @keydown.esc="cancelAddFeed"
+        />
+        <button type="submit">添加</button>
+        <button type="button" @click="cancelAddFeed">取消</button>
+      </form>
+
+      <div v-else class="rss-tab-scroller" role="tablist" aria-label="RSS Feed 来源">
+        <button
+          v-for="source in sources"
+          :key="source.url"
+          type="button"
+          role="tab"
+          :title="source.title"
+          :aria-label="source.title"
+          :aria-selected="activeSourceUrl === source.url"
+          :class="{
+            active: activeSourceUrl === source.url,
+            'rss-source-tab--icon-only': source.icon,
+          }"
+          @click="activeSourceUrl = source.url"
+        >
+          <component :is="source.icon" v-if="source.icon" class="rss-source-logo" width="17" height="17" />
+          <span v-else>{{ source.title }}</span>
+        </button>
+        <button type="button" class="rss-add-feed-button" @click="openAddFeed">
+          <LucideIcon name="plus" :size="14" />
+          <span>Add Feed</span>
+        </button>
+      </div>
     </div>
 
     <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ feedStatus }}</p>
@@ -107,9 +177,15 @@ const feedStatus = computed(() => (
       <p>{{ emptyDescription }}</p>
     </div>
 
-    <button class="panel-footer-action" type="button" @click="emit('open-settings')">
-      <span>{{ hasSources ? '管理订阅来源' : '配置订阅来源' }}</span>
-      <LucideIcon name="arrow" :size="15" />
+    <button
+      v-if="activeSource"
+      class="panel-footer-action feed-remove-action"
+      type="button"
+      :aria-label="`删除 Feed：${activeSource.title}`"
+      @click="emit('remove-feed', activeSource.url)"
+    >
+      <LucideIcon name="trash" :size="15" />
+      <span>删除 {{ activeSource.title }}</span>
     </button>
   </aside>
 </template>
