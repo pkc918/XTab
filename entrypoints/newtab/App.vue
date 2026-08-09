@@ -160,12 +160,11 @@ function toggleTheme(event: MouseEvent) {
   const button = event.currentTarget as HTMLElement;
   const target = button.querySelector('svg') ?? button;
   const targetRect = target.getBoundingClientRect();
-  const snapshotScale = window.devicePixelRatio || 1;
-  const x = (targetRect.left + targetRect.width / 2) * snapshotScale;
-  const y = (targetRect.top + targetRect.height / 2) * snapshotScale;
+  const x = targetRect.left + targetRect.width / 2;
+  const y = targetRect.top + targetRect.height / 2;
   const endRadius = Math.hypot(
-    Math.max(x, innerWidth * snapshotScale - x),
-    Math.max(y, innerHeight * snapshotScale - y),
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y),
   );
   const nextTheme: Theme = theme.value === 'light' ? 'dark' : 'light';
   const transition = document.startViewTransition(async () => {
