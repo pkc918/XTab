@@ -9,7 +9,6 @@ interface GithubSearchRepo {
   description: string | null;
   language: string | null;
   stargazers_count: number;
-  watchers_count: number;
   forks_count: number;
   html_url: string;
 }
@@ -101,7 +100,6 @@ function mapRepo(item: GithubSearchRepo): TrendingRepo {
     description: item.description || '',
     language: item.language || 'Unknown',
     stars: item.stargazers_count,
-    watchers: item.watchers_count,
     forks: item.forks_count,
     url: item.html_url,
     accent: languageColor(item.language),

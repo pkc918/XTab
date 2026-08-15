@@ -77,7 +77,6 @@ export interface TrendingRepo {
   description: string;
   language: string;
   stars: number;
-  watchers: number;
   forks: number;
   url: string;
   accent: string;

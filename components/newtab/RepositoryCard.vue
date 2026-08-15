@@ -31,9 +31,6 @@ function formatCount(value: number) {
           <span class="repo-stat" :aria-label="`${repo.stars} stars`" title="Stars">
             <LucideIcon name="star" :size="11" />{{ formatCount(repo.stars) }}
           </span>
-          <span class="repo-stat" :aria-label="`${repo.watchers} watchers`" title="Watch">
-            <LucideIcon name="eye" :size="11" />{{ formatCount(repo.watchers) }}
-          </span>
           <span class="repo-stat" :aria-label="`${repo.forks} forks`" title="Forks">
             <LucideIcon name="fork" :size="11" />{{ formatCount(repo.forks) }}
           </span>
