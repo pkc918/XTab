@@ -160,6 +160,6 @@ public/              Extension icons and brand assets
 utils/               URL and website shortcut utilities
 ```
 
-## Project status
+## Version
 
-XTab is under active development. The interface and data structures may continue to change, and distribution channels and contribution guidelines have not been finalized yet.
+Current release: `v1.0.0`.

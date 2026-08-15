@@ -2,7 +2,7 @@
   "name": "xtab",
   "description": "A grayscale new-tab workspace with vivid signals for geeks.",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
