@@ -15,7 +15,11 @@ import type { FeedCategory, QuickLink, RssItem, RssSourceTab, Theme } from '@/co
 import { useGithubAuth } from '@/composables/useGithubAuth';
 import { useGithubProfile } from '@/composables/useGithubProfile';
 import { useRss, type RssFeedSourceInput, type RssStreamItem } from '@/composables/useRss';
-import { useGithubTrending } from '@/composables/useGithubTrending';
+import {
+  useGithubTrending,
+  type GithubRepositoryFeed,
+  type GithubTrendingPeriod,
+} from '@/composables/useGithubTrending';
 import { createQuickLink, parseStoredQuickLinks, serializeQuickLinks } from '@/utils/quickLinks';
 import { webUrlKey } from '@/utils/urls';
 import { quickLinks as defaultQuickLinks } from './data';
@@ -356,12 +360,14 @@ async function removeRssFeed(url: string) {
 }
 
 const trendingLanguage = ref('全部');
+const trendingPeriod = ref<GithubTrendingPeriod>('weekly');
+const trendingFeed = ref<GithubRepositoryFeed>('popular');
 const {
   repos: trendingRepos,
   loading: trendingLoading,
   error: trendingError,
   refresh: refreshTrending,
-} = useGithubTrending(trendingLanguage);
+} = useGithubTrending(trendingLanguage, trendingPeriod, trendingFeed);
 
 function openSettings() {
   showNotice('更多设置与快捷入口管理仍在完善中；可使用搜索框下方的「添加」新增网站。');
@@ -452,6 +458,8 @@ onUnmounted(() => {
         />
         <RepositoryPanel
           v-model:language="trendingLanguage"
+          v-model:period="trendingPeriod"
+          v-model:feed="trendingFeed"
           :repos="trendingRepos"
           :loading="trendingLoading"
           :error="trendingError"

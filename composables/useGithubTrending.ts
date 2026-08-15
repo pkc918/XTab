@@ -3,6 +3,9 @@ import type { TrendingRepo } from '@/components/newtab/types';
 
 type GithubFetch = (path: string | URL, init?: RequestInit) => Promise<Response>;
 
+export type GithubTrendingPeriod = 'daily' | 'weekly' | 'monthly';
+export type GithubRepositoryFeed = 'popular' | 'new';
+
 interface GithubSearchRepo {
   id: number;
   full_name: string;
@@ -106,14 +109,99 @@ function mapRepo(item: GithubSearchRepo): TrendingRepo {
   };
 }
 
-function trendingSearchUrl(language: string) {
-  const weekAgo = new Date();
-  weekAgo.setDate(weekAgo.getDate() - 7);
-  const dateStr = weekAgo.toISOString().split('T')[0];
-  let query = `created:>${dateStr}`;
-  const lang = language && language !== '全部' ? language : '';
-  if (lang) query += `+language:${encodeURIComponent(lang)}`;
-  return `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=24`;
+const PERIOD_DAYS: Record<GithubTrendingPeriod, number> = {
+  daily: 1,
+  weekly: 7,
+  monthly: 30,
+};
+
+function languageSlug(language: string) {
+  return encodeURIComponent(language.toLowerCase().replaceAll(' ', '-'));
+}
+
+function newRepositoryQuery(language: string, period: GithubTrendingPeriod) {
+  const startDate = new Date();
+  startDate.setUTCDate(startDate.getUTCDate() - PERIOD_DAYS[period]);
+  const dateStr = startDate.toISOString().split('T')[0];
+  const languageQuery = language && language !== '全部' ? ` language:"${language}"` : '';
+  return `created:>${dateStr}${languageQuery}`;
+}
+
+function newRepositoriesApiUrl(language: string, period: GithubTrendingPeriod) {
+  const params = new URLSearchParams({
+    q: newRepositoryQuery(language, period),
+    sort: 'stars',
+    order: 'desc',
+    per_page: '24',
+  });
+  return `https://api.github.com/search/repositories?${params}`;
+}
+
+export function githubTrendingPageUrl(language: string, period: GithubTrendingPeriod) {
+  const languagePath = language && language !== '全部' ? `/${languageSlug(language)}` : '';
+  return `https://github.com/trending${languagePath}?since=${period}`;
+}
+
+export function githubNewRepositoriesPageUrl(language: string, period: GithubTrendingPeriod) {
+  const params = new URLSearchParams({
+    q: newRepositoryQuery(language, period),
+    type: 'repositories',
+    s: 'stars',
+    o: 'desc',
+  });
+  return `https://github.com/search?${params}`;
+}
+
+function normalizeText(value: string | null | undefined) {
+  return (value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function parseCount(value: string | null | undefined) {
+  const digits = (value ?? '').replace(/[^\d]/g, '');
+  return digits ? Number.parseInt(digits, 10) : 0;
+}
+
+function repositoryId(name: string) {
+  let hash = 0;
+  for (const character of name) {
+    hash = (Math.imul(31, hash) + character.codePointAt(0)!) | 0;
+  }
+  return hash >>> 0;
+}
+
+function parseTrendingRepositories(html: string) {
+  const document = new DOMParser().parseFromString(html, 'text/html');
+  return [...document.querySelectorAll<HTMLElement>('article.Box-row')]
+    .map((article): TrendingRepo | null => {
+      const repositoryLink = article.querySelector<HTMLAnchorElement>('h2 a[href]');
+      if (!repositoryLink) return null;
+
+      const repositoryUrl = new URL(repositoryLink.getAttribute('href') ?? '', 'https://github.com');
+      const [owner, repository] = repositoryUrl.pathname.split('/').filter(Boolean);
+      if (!owner || !repository) return null;
+
+      const name = `${owner}/${repository}`;
+      const language = normalizeText(
+        article.querySelector<HTMLElement>('[itemprop="programmingLanguage"]')?.textContent,
+      ) || 'Unknown';
+      return {
+        id: repositoryId(name),
+        name,
+        description: normalizeText(
+          article.querySelector<HTMLElement>('p.col-9, p.my-1')?.textContent,
+        ),
+        language,
+        stars: parseCount(
+          article.querySelector<HTMLAnchorElement>('a[href$="/stargazers"]')?.textContent,
+        ),
+        forks: parseCount(
+          article.querySelector<HTMLAnchorElement>('a[href$="/forks"]')?.textContent,
+        ),
+        url: repositoryUrl.toString(),
+        accent: languageColor(language),
+      };
+    })
+    .filter((repo): repo is TrendingRepo => repo !== null);
 }
 
 function isAbortError(error: unknown) {
@@ -122,6 +210,8 @@ function isAbortError(error: unknown) {
 
 export function useGithubTrending(
   language: Ref<string>,
+  period: Ref<GithubTrendingPeriod>,
+  feed: Ref<GithubRepositoryFeed>,
   githubFetch?: GithubFetch,
 ) {
   const repos = ref<TrendingRepo[]>([]);
@@ -142,30 +232,40 @@ export function useGithubTrending(
 
     try {
       const lang = language.value;
-      const url = trendingSearchUrl(lang);
-      const fetchFn = githubFetch ?? fetch;
-      const init: RequestInit = { signal: ctrl.signal };
-      if (!githubFetch) {
-        init.headers = { Accept: 'application/vnd.github+json' };
-      }
-      const response = await fetchFn(url, init);
+      const isPopular = feed.value === 'popular';
+      const url = isPopular
+        ? githubTrendingPageUrl(lang, period.value)
+        : newRepositoriesApiUrl(lang, period.value);
+      const fetchFn = isPopular ? fetch : (githubFetch ?? fetch);
+      const response = await fetchFn(url, {
+        signal: ctrl.signal,
+        headers: {
+          Accept: isPopular ? 'text/html' : 'application/vnd.github+json',
+        },
+      });
 
       if (ctrl.signal.aborted || version !== requestVersion) return;
 
       if (!response.ok) {
-        throw new Error(`GitHub 搜索失败（HTTP ${response.status}）。`);
+        throw new Error(
+          `${isPopular ? 'GitHub Trending' : 'GitHub search'} failed (HTTP ${response.status}).`,
+        );
       }
 
-      const payload: SearchResponse = await response.json();
-      if (!Array.isArray(payload.items)) {
-        throw new Error('GitHub 返回了无法解析的数据。');
-      }
+      const nextRepos = isPopular
+        ? parseTrendingRepositories(await response.text())
+        : await response.json().then((payload: SearchResponse) => {
+          if (!Array.isArray(payload.items)) {
+            throw new Error('GitHub returned an unreadable response.');
+          }
+          return payload.items.map(mapRepo);
+        });
 
       if (ctrl.signal.aborted || version !== requestVersion) return;
-      repos.value = payload.items.map(mapRepo);
+      repos.value = nextRepos;
     } catch (err) {
       if (isAbortError(err) || version !== requestVersion) return;
-      error.value = err instanceof Error ? err.message : '无法获取 GitHub Trending 数据。';
+      error.value = err instanceof Error ? err.message : 'Unable to load GitHub repositories.';
     } finally {
       if (version === requestVersion && !ctrl.signal.aborted) {
         loading.value = false;
@@ -174,7 +274,7 @@ export function useGithubTrending(
     }
   }
 
-  watch(language, () => {
+  watch([language, period, feed], () => {
     void refresh();
   });
 

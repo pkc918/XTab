@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import LucideIcon from '@/components/LucideIcon.vue';
+import {
+  githubNewRepositoriesPageUrl,
+  githubTrendingPageUrl,
+  type GithubRepositoryFeed,
+  type GithubTrendingPeriod,
+} from '@/composables/useGithubTrending';
 import RepositoryCard from './RepositoryCard.vue';
 import type { TrendingRepo } from './types';
 
@@ -81,13 +87,30 @@ const props = defineProps<{
 }>();
 
 const language = defineModel<string>('language', { default: '全部' });
+const period = defineModel<GithubTrendingPeriod>('period', { default: 'weekly' });
+const feed = defineModel<GithubRepositoryFeed>('feed', { default: 'popular' });
 defineEmits<{ (event: 'refresh'): void }>();
 
-const filteredRepos = computed(() =>
-  language.value === '全部'
-    ? props.repos
-    : props.repos.filter((repo) => repo.language === language.value),
-);
+const feeds: ReadonlyArray<{ value: GithubRepositoryFeed; label: string }> = [
+  { value: 'popular', label: 'Popular' },
+  { value: 'new', label: 'New' },
+];
+
+const periods: ReadonlyArray<{ value: GithubTrendingPeriod; label: string }> = [
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'monthly', label: 'Monthly' },
+];
+
+const panelSubtitle = computed(() => feed.value === 'popular'
+  ? 'Trending on GitHub'
+  : 'Recently created');
+const emptyMessage = computed(() => feed.value === 'popular'
+  ? 'No trending repositories match these filters.'
+  : 'No new repositories match these filters.');
+const externalUrl = computed(() => feed.value === 'popular'
+  ? githubTrendingPageUrl(language.value, period.value)
+  : githubNewRepositoriesPageUrl(language.value, period.value));
 
 const isInitialLoad = computed(() => props.loading && props.repos.length === 0);
 const isRefreshing = computed(() => props.loading && props.repos.length > 0);
@@ -99,25 +122,43 @@ const isRefreshing = computed(() => props.loading && props.repos.length > 0);
       <div class="panel-header">
         <span class="panel-icon panel-icon--repo"><LucideIcon name="github" /></span>
         <div>
-          <h2 id="repo-title">GitHub Trending</h2>
-          <span>发现热门开源项目</span>
+          <h2 id="repo-title">Repositories</h2>
+          <span>{{ panelSubtitle }}</span>
         </div>
       </div>
       <div class="panel-controls">
         <select
+          v-model="feed"
+          class="repo-filter-select"
+          aria-label="Filter by repository feed"
+        >
+          <option v-for="option in feeds" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <select
+          v-model="period"
+          class="repo-filter-select"
+          aria-label="Filter by time range"
+        >
+          <option v-for="option in periods" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <select
           v-model="language"
-          class="repo-language-select"
-          aria-label="按编程语言筛选"
+          class="repo-filter-select repo-language-select"
+          aria-label="Filter by programming language"
         >
           <option v-for="lang in GITHUB_TRENDING_LANGUAGES" :key="lang" :value="lang">
-            {{ lang === '全部' ? '全部语言' : lang }}
+            {{ lang === '全部' ? 'All languages' : lang }}
           </option>
         </select>
         <button
           type="button"
           class="panel-refresh-button"
-          aria-label="刷新 Trending"
-          title="刷新"
+          aria-label="Refresh repositories"
+          title="Refresh"
           :disabled="loading"
           @click="$emit('refresh')"
         >
@@ -144,25 +185,25 @@ const isRefreshing = computed(() => props.loading && props.repos.length > 0);
       <div v-else-if="error && repos.length === 0" class="repo-grid-message" role="status">
         <span class="empty-icon"><LucideIcon name="refresh" :size="18" /></span>
         <p>{{ error }}</p>
-        <button type="button" @click="$emit('refresh')">重试</button>
+        <button type="button" @click="$emit('refresh')">Retry</button>
       </div>
 
       <!-- Empty after load -->
-      <div v-else-if="!loading && filteredRepos.length === 0" class="repo-grid-message">
+      <div v-else-if="!loading && repos.length === 0" class="repo-grid-message">
         <span class="empty-icon"><LucideIcon name="filter" :size="18" /></span>
-        <p>没有找到 {{ language === '全部' ? '' : language }} 仓库。</p>
+        <p>{{ emptyMessage }}</p>
       </div>
 
       <!-- Cards (persist during refresh) -->
       <RepositoryCard
-        v-for="repo in filteredRepos"
+        v-for="repo in repos"
         :key="repo.id"
         :repo="repo"
       />
     </div>
 
-    <a class="panel-footer-action" href="https://github.com/trending">
-      <span>打开 GitHub Trending</span>
+    <a class="panel-footer-action" :href="externalUrl">
+      <span>{{ feed === 'popular' ? 'Open GitHub Trending' : 'Open GitHub Search' }}</span>
       <LucideIcon name="external" :size="15" />
     </a>
   </section>

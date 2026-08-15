@@ -845,6 +845,10 @@ main {
   flex: 0 0 auto;
 }
 
+.repo-panel .panel-controls {
+  gap: 6px;
+}
+
 .panel-refresh-button,
 .save-button {
   width: 30px;
@@ -1217,7 +1221,9 @@ main {
   color: var(--text-tertiary);
 }
 
-.repo-language-select {
+.repo-filter-select {
+  field-sizing: content;
+  width: auto;
   min-height: 30px;
   padding: 0 28px 0 9px;
   border: 1px solid var(--border);
@@ -1234,15 +1240,16 @@ main {
   background-position: right 7px center;
 }
 
-.repo-language-select:hover {
+.repo-filter-select:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.repo-filter-select:hover {
   color: var(--text);
 }
 
-.repo-language-select:focus-visible {
-  outline: none;
-}
-
-:root[data-theme='dark'] .repo-language-select {
+:root[data-theme='dark'] .repo-filter-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23949494' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
@@ -2254,7 +2261,7 @@ main {
     padding-top: 6px;
   }
 
-  .repo-language-select {
+  .repo-filter-select {
     min-height: 28px;
     font-size: 11px;
   }
