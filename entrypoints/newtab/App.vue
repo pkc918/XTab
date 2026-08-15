@@ -296,8 +296,22 @@ const rssItems = computed<RssItem[]>(() => rssStreamItems.value.map((item) => {
     publishedAt: item.publishedAt,
   };
 }));
+
+function siteFaviconUrl(value?: string) {
+  if (!value) return undefined;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return undefined;
+    return new URL('/favicon.ico', url).href;
+  } catch {
+    return undefined;
+  }
+}
+
 const rssSourceTabs = computed<RssSourceTab[]>(() => rssSources.value.map((source) => {
   const loaded = rssFeeds.value.find((feed) => feed.source.url === source.url);
+  const faviconUrl = siteFaviconUrl(loaded?.feed.homePageUrl || source.url);
+  const feedIconUrl = loaded?.feed.imageUrl;
   let fallbackTitle = source.url;
   try {
     fallbackTitle = new URL(source.url).hostname;
@@ -312,6 +326,8 @@ const rssSourceTabs = computed<RssSourceTab[]>(() => rssSources.value.map((sourc
       : source.url === defaultClaudeRssUrl
         ? AnthropicIcon
         : undefined,
+    iconUrl: feedIconUrl || faviconUrl,
+    fallbackIconUrl: feedIconUrl && faviconUrl !== feedIconUrl ? faviconUrl : undefined,
   };
 }));
 const rssErrorMessage = computed(() => rssErrors.value[0]?.message ?? '');

@@ -24,6 +24,7 @@ const activeSourceUrl = ref('');
 const isAddingFeed = ref(false);
 const newFeedUrl = ref('');
 const newFeedInput = ref<HTMLInputElement | null>(null);
+const failedSourceIcons = ref<Set<string>>(new Set());
 
 watch(() => props.sources, (sources) => {
   if (sources.length === 0) {
@@ -62,6 +63,18 @@ const feedStatus = computed(() => (
     ? '正在刷新 RSS 内容。'
     : `${activeSource.value?.title ?? '当前 Feed'}，共 ${filteredItems.value.length} 篇文章。`
 ));
+
+function visibleSourceIconUrl(source: RssSourceTab) {
+  return [source.iconUrl, source.fallbackIconUrl].find((url): url is string => (
+    Boolean(url && !failedSourceIcons.value.has(url))
+  ));
+}
+
+function markSourceIconFailed(source: RssSourceTab) {
+  const iconUrl = visibleSourceIconUrl(source);
+  if (!iconUrl) return;
+  failedSourceIcons.value = new Set([...failedSourceIcons.value, iconUrl]);
+}
 
 async function openAddFeed() {
   newFeedUrl.value = '';
@@ -145,11 +158,22 @@ function submitFeed() {
           :aria-selected="activeSourceUrl === source.url"
           :class="{
             active: activeSourceUrl === source.url,
-            'rss-source-tab--icon-only': source.icon,
+            'rss-source-tab--icon-only': source.icon || visibleSourceIconUrl(source),
           }"
           @click="activeSourceUrl = source.url"
         >
           <component :is="source.icon" v-if="source.icon" class="rss-source-logo" width="17" height="17" />
+          <img
+            v-else-if="visibleSourceIconUrl(source)"
+            class="rss-source-logo rss-source-logo--image"
+            :src="visibleSourceIconUrl(source)"
+            alt=""
+            width="17"
+            height="17"
+            decoding="async"
+            referrerpolicy="no-referrer"
+            @error="markSourceIconFailed(source)"
+          >
           <span v-else>{{ source.title }}</span>
         </button>
         <button type="button" class="rss-add-feed-button" @click="openAddFeed">

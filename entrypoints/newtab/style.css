@@ -979,7 +979,15 @@ main {
 }
 
 .rss-source-logo {
+  width: 17px;
+  height: 17px;
   flex: 0 0 auto;
+}
+
+.rss-source-logo--image {
+  display: block;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .rss-tab-scroller > .rss-source-tab--icon-only {

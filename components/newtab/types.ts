@@ -60,6 +60,8 @@ export interface RssSourceTab {
   url: string;
   title: string;
   icon?: Component;
+  iconUrl?: string;
+  fallbackIconUrl?: string;
 }
 
 export interface Repository {
