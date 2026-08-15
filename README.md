@@ -1,71 +1,165 @@
-# XTab
+![XTab preview](./public/xtab.png)
 
-面向极客的 Chrome 新标签页：搜索、快捷网站、RSS、GitHub 推荐与个人 GitHub 信息集中在一屏。
+XTab is a new tab extension built for developers and geeks.
 
-## 本地运行
+## Features
+
+### Search and shortcuts
+
+- Search with Google or enter a URL to open a website directly.
+- Search with Google AI Mode.
+- Press `⌘ K`, `Ctrl K`, or `/` to focus the search box.
+- Add and remove custom website shortcuts, stored locally by the extension.
+
+### RSS reader
+
+- Includes OpenAI News and Claude Code updates by default.
+- Add or remove feeds directly from the RSS panel.
+- Supports RSS 0.9x/2.0, RSS 1.0 (RDF), Atom, and JSON Feed 1.0/1.1.
+- Handles common Content, Dublin Core, Media RSS, and enclosure fields.
+- Uses icons declared by feeds when available, falls back to the site favicon, and safely displays the source name if neither icon can be loaded.
+- Supports concurrent refreshes, request timeouts, content size limits, article deduplication, and ETag/Last-Modified conditional requests.
+
+### GitHub repository discovery
+
+- `Popular`: browse repositories from GitHub Trending.
+- `New`: discover recently created repositories gaining attention.
+- Filter either feed by `Daily`, `Weekly`, or `Monthly`, as well as by programming language.
+- Repository cards show the description, language, stars, and forks, with direct links to GitHub.
+
+### GitHub profile
+
+- Sign in through GitHub Device Flow without bundling a Client Secret in the extension.
+- View your avatar, public profile, repository count, and follower statistics.
+- See your GitHub contribution activity and recent public events.
+- Restore an existing session or disconnect at any time.
+
+### Interface
+
+- Light and dark themes.
+- A compact, single-page layout for quick actions and content discovery.
+- Clear loading, empty, error, and refresh states.
+
+## Tech stack
+
+- [WXT](https://wxt.dev/)
+- [Vue 3](https://vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Lucide](https://lucide.dev/)
+- [pnpm](https://pnpm.io/)
+
+## Local development
+
+### 1. Install dependencies
 
 ```bash
 pnpm install
-pnpm dev
 ```
 
-## GitHub 登录
+### 2. Configure environment variables
 
-XTab 使用 GitHub Device Flow，不把 Client Secret 打包进扩展。
+Copy the example environment file:
 
-1. 创建 GitHub App 或 OAuth App，并启用 Device Flow。
-2. 复制 `.env.example` 为 `.env.local`。
-3. 填写公开 Client ID：
+```bash
+cp .env.example .env.local
+```
+
+To enable GitHub sign-in, create a GitHub App or OAuth App with Device Flow enabled and provide its public Client ID:
 
 ```dotenv
 WXT_GITHUB_CLIENT_ID=your_client_id
 ```
 
-点击 Header 右侧的圆形 GitHub 图标后，授权码会被复制并打开 GitHub 授权页。授权完成后，Header 会显示真实头像，右侧面板会显示账号与公开统计。
+A Client Secret is neither required nor safe to include in the extension.
 
-访问令牌保存在扩展自己的 `chrome.storage.local` 中，并限制为可信扩展上下文可读；网页无法直接读取。
+### 3. Start the development server
 
-## RSS 来源
+```bash
+pnpm dev
+```
 
-首次使用时会默认加入以下来源：
+For Firefox development:
 
-- `OpenAI News`（`https://openai.com/news/rss.xml`）
-- `Claude Code`（`https://code.claude.com/docs/en/whats-new/rss.xml`）
+```bash
+pnpm dev:firefox
+```
 
-在 `.env.local` 中可通过 `WXT_RSS_FEED_URLS` 追加来源，简单场景可使用逗号分隔：
+## RSS source configuration
+
+In addition to using `Add Feed` in the interface, you can preconfigure extra sources with `WXT_RSS_FEED_URLS` in `.env.local`.
+
+Separate multiple URLs with commas or newlines:
 
 ```dotenv
 WXT_RSS_FEED_URLS=https://example.com/rss.xml,https://example.org/atom.xml
 ```
 
-需要自定义显示名称或分类时，也可以使用 JSON 数组（保持在同一行）：
+To specify display names or categories, use a single-line JSON array:
 
 ```dotenv
-WXT_RSS_FEED_URLS=[{"url":"https://example.com/feed.json","title":"示例 Feed","category":"开发"}]
+WXT_RSS_FEED_URLS=[{"url":"https://example.com/feed.json","title":"Example Feed","category":"开发"}]
 ```
 
-解析器支持 RSS 0.9x/2.0、RSS 1.0（RDF）、Atom 和 JSON Feed 1.0/1.1，也兼容常见的 Content、Dublin Core、Media RSS 与 enclosure 字段。默认的 OpenAI News 和 Claude Code 会直接加载；首次读取用户追加的新域名时，点击 RSS 面板的刷新按钮并允许对应域名。扩展不会在安装时直接申请所有网站的读取权限。
+Source objects support the following fields:
 
-两个 composable 也可以独立使用：
+| Field | Required | Description |
+| --- | --- | --- |
+| `url` | Yes | RSS, Atom, or JSON Feed URL |
+| `title` | No | Source name displayed in the interface |
+| `category` | No | One of `开发`, `设计`, or `AI` |
 
-```ts
-import { useGithubAuth } from '@/composables/useGithubAuth';
-import { useRss } from '@/composables/useRss';
+When a user-added domain is accessed for the first time, the browser requests permission for that website. XTab does not request access to every website during installation.
 
-const auth = useGithubAuth({ scopes: ['read:user'] });
-await auth.connect();
-const response = await auth.apiFetch('/user');
+## Build and checks
 
-const rss = useRss(['https://example.com/feed.xml']);
-const parsed = rss.parse(rawFeed, { sourceUrl: 'https://example.com/feed.xml' });
-await rss.refresh({ requestPermissions: true });
-```
-
-`useGithubAuth` 还提供会话恢复、取消、断开登录、授权状态及受限的 `apiFetch`；`useRss` 提供并发刷新、超时/大小限制、ETag/Last-Modified 条件请求、去重排序及逐来源错误状态。
-
-## 检查与构建
+Run the TypeScript type check:
 
 ```bash
 pnpm compile
+```
+
+Build the Chrome extension:
+
+```bash
 pnpm build
 ```
+
+Build the Firefox extension:
+
+```bash
+pnpm build:firefox
+```
+
+Create distributable archives:
+
+```bash
+pnpm zip
+pnpm zip:firefox
+```
+
+Build artifacts are written to `.output/`.
+
+## Permissions and data
+
+XTab requests only the permissions needed by its features:
+
+- `storage`: saves website shortcuts, RSS sources, and the GitHub session.
+- `clipboardWrite`: copies the device code during GitHub Device Flow sign-in.
+- GitHub, OpenAI, and Claude Code host permissions: reads public content required by built-in features.
+- Other host permissions: granted only when the user adds and authorizes an RSS source from that website.
+
+The GitHub access token is stored in the extension's local storage and restricted to trusted extension contexts. Regular web pages cannot access it. XTab never requires a Client Secret in its source code or build artifacts.
+
+## Project structure
+
+```text
+components/newtab/   New tab interface components
+composables/         GitHub auth, profile, repositories, and RSS logic
+entrypoints/newtab/  New tab entry point, state orchestration, and styles
+public/              Extension icons and brand assets
+utils/               URL and website shortcut utilities
+```
+
+## Project status
+
+XTab is under active development. The interface and data structures may continue to change, and distribution channels and contribution guidelines have not been finalized yet.
