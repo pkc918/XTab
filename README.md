@@ -2,6 +2,10 @@
 
 XTab is a new tab extension built for developers and geeks.
 
+<p align="center">
+  <a href="https://linux.do/"><img alt="Platform" src="https://img.shields.io/badge/Linux.do-open--source-F59E0B?style=for-the-badge" /></a>
+</p>
+
 ## Features
 
 ### Search and shortcuts
