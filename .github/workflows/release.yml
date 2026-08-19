@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.18.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check types
+        run: pnpm compile
+
+      - name: Build Chrome archive
+        run: pnpm zip
+
+      - name: Build Firefox archive
+        run: pnpm zip:firefox
+
+      - name: Name release artifacts
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${TAG_NAME#v}"
+          mkdir -p release
+          cp .output/*-chrome.zip "release/XTab-${version}-chrome.zip"
+          cp .output/*-firefox.zip "release/XTab-${version}-firefox.zip"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${TAG_NAME#v}"
+
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            gh release upload "$TAG_NAME" release/*.zip --clobber
+          else
+            gh release create "$TAG_NAME" release/*.zip \
+              --verify-tag \
+              --title "XTab ${version}" \
+              --generate-notes
+          fi

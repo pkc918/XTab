@@ -143,6 +143,10 @@ pnpm zip:firefox
 
 Build artifacts are written to `.output/`.
 
+Pushing a tag beginning with `v` (for example, `v1.0.0`) creates a GitHub
+Release containing `XTab-1.0.0-chrome.zip` and
+`XTab-1.0.0-firefox.zip`.
+
 ## Permissions and data
 
 XTab requests only the permissions needed by its features:
